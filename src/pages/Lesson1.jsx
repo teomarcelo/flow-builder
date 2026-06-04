@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import Quiz from '../components/Quiz';
 import { quizData } from '../data/curriculum';
 
+const COLOR = '#7C3AED';
+const COLOR_BG = '#F5F3FF';
+
 export default function Lesson1() {
   return (
     <>
@@ -12,11 +15,11 @@ export default function Lesson1() {
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: '#F5F3FF', color: '#7B5EA7' }}>
+        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: '1px solid #DDD6FE' }}>
           🧠 Lesson 1
         </div>
-        <h1>Think Like a Developer for Admins</h1>
-        <p>Variables, data types, algorithms, and control structures — the building blocks all flows are made of.</p>
+        <h1>Think Like a Developer</h1>
+        <p>Variables, data types, algorithms, and control structures — the building blocks every flow is made of.</p>
       </div>
 
       <div className="analogy-block fade-up fade-up-1">
@@ -24,21 +27,21 @@ export default function Lesson1() {
         <div>
           <div className="analogy-label">The Story of This Lesson — Pizza Restaurant</div>
           <div className="analogy-text">
-            Throughout Lesson 1, we use a pizza restaurant as our Salesforce org. The restaurant has tables (records), orders (data), a kitchen (logic), and staff who follow processes (flows). Every concept maps back to this story — so start your students here.
+            Throughout Lesson 1 we use a pizza restaurant as our Salesforce org. The restaurant has tables (records), orders (data), a kitchen (logic), and staff who follow processes (flows). Every concept maps back to this story.
           </div>
         </div>
       </div>
 
-      {/* TOPIC 1 — Variables */}
+      {/* ── TOPIC 1 — Variables ── */}
       <section className="topic-section fade-up fade-up-2" id="variables">
         <h2>Topic 1: Variables</h2>
 
-        <div className="definition-box">
+        <div className="definition-box" style={{ borderLeftColor: COLOR }}>
           <div className="definition-box-icon">📖</div>
           <div>
             <div className="definition-label">Definition</div>
             <div className="definition-text">
-              A <strong>variable</strong> is a named container. In Flow, we use the <strong>Assignment</strong> element to provide a value to a variable.
+              A <strong>variable</strong> is a named container that holds a value. In Flow, we use the <strong>Assignment</strong> element to provide a value to a variable.
             </div>
           </div>
         </div>
@@ -48,15 +51,15 @@ export default function Lesson1() {
           <div>
             <div className="analogy-label">Pizza Analogy</div>
             <div className="analogy-text">
-              In algebra you wrote x = 10. In our restaurant, <code>varNumOfPizzas = 10</code> means "the container called 'number of pizzas' currently holds the value 10." The container exists even when empty — just like a reserved table waiting for guests.
+              In algebra you wrote <code>x = 10</code>. In our restaurant, <code>varNumOfPizzas = 10</code> means "the container called 'number of pizzas' currently holds 10." The container exists even when empty — like a reserved table waiting for guests.
             </div>
           </div>
         </div>
 
         <div className="concept-card">
           <h4>Why Do We Use Variables?</h4>
-          <p>A program consists of <strong>instructions</strong> (what to do) and <strong>data</strong> (what to do it with). Variables store the data your flow needs while it's running.</p>
-          <div className="tag-row">
+          <p>A program has <strong>instructions</strong> (what to do) and <strong>data</strong> (what to do it with). Variables store the data your flow needs while it runs.</p>
+          <div className="tag-row" style={{ marginTop: 12 }}>
             <span className="tag tag-blue">📥 Input from users</span>
             <span className="tag tag-blue">☁️ Fields from Salesforce objects</span>
             <span className="tag tag-blue">🔍 Results read from the database</span>
@@ -66,11 +69,8 @@ export default function Lesson1() {
 
         <div className="concept-card">
           <h4>Naming Variables — camelCase Convention</h4>
-          <p>A good variable name makes your flow readable and maintainable. The course uses the <code>var</code> prefix + camelCase.</p>
           <table className="comparison-table" style={{ marginTop: 12 }}>
-            <thead>
-              <tr><th>Rule</th><th>Good Example</th><th>Bad Example</th></tr>
-            </thead>
+            <thead><tr><th>Rule</th><th>Good Example</th><th>Bad Example</th></tr></thead>
             <tbody>
               <tr><td>Describes the purpose</td><td><code>varNumOfPizzas</code></td><td><code>var1</code></td></tr>
               <tr><td>Full meaningful words</td><td><code>varAccountRecord</code></td><td><code>varAcct</code></td></tr>
@@ -81,16 +81,16 @@ export default function Lesson1() {
         </div>
       </section>
 
-      {/* TOPIC 2 — Data Types */}
+      {/* ── TOPIC 2 — Data Types ── */}
       <section className="topic-section" id="data-types">
         <h2>Topic 2: Data Types</h2>
 
-        <div className="definition-box">
+        <div className="definition-box" style={{ borderLeftColor: COLOR }}>
           <div className="definition-box-icon">📖</div>
           <div>
             <div className="definition-label">Definition</div>
             <div className="definition-text">
-              <strong>Data types</strong> are a way of categorizing data so that they can be classified, compared, and validated.
+              <strong>Data types</strong> categorize data so it can be classified, compared, and validated. Every variable has exactly one data type.
             </div>
           </div>
         </div>
@@ -98,134 +98,74 @@ export default function Lesson1() {
         <div className="concept-card">
           <h4>The 7 Data Types — With Pizza Examples</h4>
           <table className="comparison-table" style={{ marginTop: 12 }}>
-            <thead>
-              <tr><th>Data Type</th><th>What It Stores</th><th>Example Value</th><th>🍕 Pizza Analogy</th></tr>
-            </thead>
+            <thead><tr><th>Data Type</th><th>What It Stores</th><th>Example Value</th><th>🍕 Pizza Analogy</th></tr></thead>
             <tbody>
-              <tr>
-                <td><span className="tag tag-blue">Text</span></td>
-                <td>Letters, words, sentences</td>
-                <td>"The pizza is good."</td>
-                <td>Pizza type name ("Margherita")</td>
-              </tr>
-              <tr>
-                <td><span className="tag tag-orange">Number</span></td>
-                <td>Integers and decimals</td>
-                <td>5, 302.12</td>
-                <td>Number of pizza slices</td>
-              </tr>
-              <tr>
-                <td><span className="tag tag-purple">Boolean</span></td>
-                <td>TRUE or FALSE only</td>
-                <td>TRUE</td>
-                <td>Is the pizza ready? (Yes/No)</td>
-              </tr>
-              <tr>
-                <td><span className="tag tag-teal">Date</span></td>
-                <td>Calendar date, no time</td>
-                <td>10/13/2022</td>
-                <td>Date the restaurant opened</td>
-              </tr>
-              <tr>
-                <td><span className="tag tag-teal">Date/Time</span></td>
-                <td>Date + specific time</td>
-                <td>10/13/2022, 10:04 AM</td>
-                <td>Exact time an order was received</td>
-              </tr>
-              <tr>
-                <td><span className="tag tag-green">Record (Object)</span></td>
-                <td>All fields of ONE Salesforce record</td>
-                <td>Acme Inc, 1 Main St, 408-555-2091...</td>
-                <td>A person sitting at a table (Name + order + preferences)</td>
-              </tr>
-              <tr>
-                <td><span className="tag tag-purple">Collection</span></td>
-                <td>A list of multiple values</td>
-                <td>Account1, Account2, Account3</td>
-                <td>All the people in the restaurant</td>
-              </tr>
+              {[
+                ['Text', 'tag-blue', 'Letters, words, sentences', '"The pizza is good."', 'Pizza type name ("Margherita")'],
+                ['Number', 'tag-orange', 'Integers and decimals', '5, 302.12', 'Number of pizza slices'],
+                ['Boolean', 'tag-purple', 'TRUE or FALSE only', 'TRUE', 'Is the pizza ready? (Yes/No)'],
+                ['Date', 'tag-teal', 'Calendar date, no time', '10/13/2022', 'Date the restaurant opened'],
+                ['Date/Time', 'tag-teal', 'Date + specific time', '10/13/2022, 10:04 AM', 'Exact time an order was received'],
+                ['Record', 'tag-green', 'All fields of ONE Salesforce record', 'Acme Inc, 1 Main St...', 'A person at the table (name + order)'],
+                ['Collection', 'tag-purple', 'A list of multiple values', 'Account1, Account2, Account3', 'All the people in the restaurant'],
+              ].map(([type, tagClass, desc, example, analogy]) => (
+                <tr key={type}>
+                  <td><span className={`tag ${tagClass}`}>{type}</span></td>
+                  <td>{desc}</td>
+                  <td><code>{example}</code></td>
+                  <td>{analogy}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
 
         <div className="tip-box">
           <span className="tip-box-icon">⚠️</span>
-          <span><span className="tip-label">Common Mistake:</span> Students confuse Date and Date/Time. Rule: if there's a clock involved (login time, order time), it's Date/Time. If it's just a calendar day (birthday, close date), it's Date.</span>
+          <span><span className="tip-label">Common Mistake</span>Students confuse Date and Date/Time. Rule: if there's a clock involved (login time, order time) → Date/Time. If it's just a calendar day (birthday, close date) → Date.</span>
         </div>
 
         <div className="note-box">
           <span className="note-box-icon">ℹ️</span>
-          <span><strong>Salesforce Record IDs</strong> look like numbers ("0011E00001pDIbHQAS") but are actually <strong>Text</strong> — you never do math on them, and they contain letters.</span>
+          <span><strong>Salesforce Record IDs</strong> like "0011E00001pDIbHQAS" are <strong>Text</strong> — they contain letters and numbers but are not numeric values you'd calculate with.</span>
         </div>
       </section>
 
-      {/* TOPIC 3 — Record & Collection Variables */}
+      {/* ── TOPIC 3 — Record & Collection ── */}
       <section className="topic-section" id="record-collection">
         <h2>Topic 3: Record &amp; Collection Variables</h2>
 
         <div className="two-col">
           <div>
-            <div className="definition-box">
+            <div className="definition-box" style={{ borderLeftColor: '#0F766E' }}>
               <div className="definition-box-icon">📖</div>
               <div>
                 <div className="definition-label">Record Variable</div>
-                <div className="definition-text">
-                  A <strong>record variable</strong> stores ALL field values for a single Salesforce record. Access individual fields using dot notation: <code>{'{!varOppRec.Name}'}</code>
-                </div>
+                <div className="definition-text">Stores ALL field values for a single Salesforce record. Access fields with dot notation: <code>{'{!varOppRec.Name}'}</code></div>
               </div>
             </div>
             <div className="analogy-block" style={{ marginBottom: 0 }}>
               <div className="analogy-icon">🧳</div>
               <div>
                 <div className="analogy-label">Suitcase Analogy</div>
-                <div className="analogy-text">
-                  A record variable is a <strong>suitcase</strong>. Pack it once (with all the Account's fields), carry it around your flow. Need Name? Open the suitcase and grab {'{!varAcctRec.Name}'}. No need to pack each shirt separately.
-                </div>
+                <div className="analogy-text">A record variable is a <strong>suitcase</strong>. Pack it once with all the Account's fields, carry it through your flow. Need the Name? Open the suitcase: <code>{'{!varAcctRec.Name}'}</code></div>
               </div>
             </div>
           </div>
           <div>
-            <div className="definition-box">
+            <div className="definition-box" style={{ borderLeftColor: '#7C3AED' }}>
               <div className="definition-box-icon">📖</div>
               <div>
                 <div className="definition-label">Collection Variable</div>
-                <div className="definition-text">
-                  A <strong>collection</strong> is a list of multiple values of a variable — like a list of Record Variables.
-                </div>
+                <div className="definition-text">A list of multiple values — like a list of Record Variables. Used when reading or writing many records at once.</div>
               </div>
             </div>
             <div className="analogy-block" style={{ marginBottom: 0 }}>
               <div className="analogy-icon">✈️</div>
               <div>
                 <div className="analogy-label">Airplane Analogy</div>
-                <div className="analogy-text">
-                  A collection is an <strong>airplane</strong> loading and unloading <strong>suitcases</strong> (records). Get Records loads suitcases onto the plane. A Loop unloads them one at a time to process each.
-                </div>
+                <div className="analogy-text">A collection is an <strong>airplane</strong> loading and unloading <strong>suitcases</strong>. Get Records loads them on. A Loop unloads them one at a time to process each.</div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="concept-card">
-          <h4>The Three Variable Categories</h4>
-          <div className="three-col" style={{ marginTop: 12 }}>
-            <div className="var-card" style={{ borderTop: '3px solid #0176D3' }}>
-              <div className="var-card-type" style={{ color: '#0176D3' }}>Primitive</div>
-              <h4>One value</h4>
-              <p>Text, Number, Boolean, Date, Date/Time. Holds exactly ONE value at a time.</p>
-              <code style={{ fontSize: '0.8rem' }}>varNumOfPizzas = 10</code>
-            </div>
-            <div className="var-card" style={{ borderTop: '3px solid #06A59A' }}>
-              <div className="var-card-type" style={{ color: '#06A59A' }}>Record</div>
-              <h4>All fields of one record</h4>
-              <p>Stores every field from a single Salesforce object record. Like a suitcase.</p>
-              <code style={{ fontSize: '0.8rem' }}>varOppRec.Name</code>
-            </div>
-            <div className="var-card" style={{ borderTop: '3px solid #7B5EA7' }}>
-              <div className="var-card-type" style={{ color: '#7B5EA7' }}>Collection</div>
-              <h4>List of multiple values</h4>
-              <p>Holds multiple records or primitives. Used with Get Records and Loops.</p>
-              <code style={{ fontSize: '0.8rem' }}>varAcctRecs (list)</code>
             </div>
           </div>
         </div>
@@ -236,41 +176,38 @@ export default function Lesson1() {
             <div className="before-col">
               <div className="before-label">❌ Without Record Variable</div>
               <h4>One variable per field</h4>
-              <ul style={{ fontSize: '0.88rem' }}>
+              <ul style={{ fontSize: '.88rem' }}>
                 <li>varAccountName</li>
                 <li>varAccountPhone</li>
                 <li>varAccountIndustry</li>
                 <li>varAccountBillingCity</li>
-                <li>varAccountOwnerId</li>
-                <li>...20+ variables for one object</li>
+                <li style={{ color: '#DC2626' }}>...20+ variables for one object</li>
               </ul>
             </div>
             <div className="after-col">
               <div className="after-label">✅ With Record Variable</div>
               <h4>One variable = entire record</h4>
-              <ul style={{ fontSize: '0.88rem' }}>
-                <li>varAcctRec (one variable)</li>
-                <li>Access Name: <code>{'{!varAcctRec.Name}'}</code></li>
-                <li>Access Phone: <code>{'{!varAcctRec.Phone}'}</code></li>
-                <li>Access any field with dot notation</li>
-                <li>Much cleaner, much faster to build</li>
+              <ul style={{ fontSize: '.88rem' }}>
+                <li><code>varAcctRec</code> (one variable)</li>
+                <li>Name: <code>{'{!varAcctRec.Name}'}</code></li>
+                <li>Phone: <code>{'{!varAcctRec.Phone}'}</code></li>
+                <li>Any field via dot notation</li>
+                <li style={{ color: '#059669' }}>Much cleaner, much faster to build</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* TOPIC 4 — Algorithms */}
+      {/* ── TOPIC 4 — Algorithms ── */}
       <section className="topic-section" id="algorithms">
         <h2>Topic 4: Algorithms</h2>
 
-        <div className="definition-box">
+        <div className="definition-box" style={{ borderLeftColor: COLOR }}>
           <div className="definition-box-icon">📖</div>
           <div>
             <div className="definition-label">Definition</div>
-            <div className="definition-text">
-              An <strong>algorithm</strong> is a set of instructions for solving a problem or accomplishing a task.
-            </div>
+            <div className="definition-text">An <strong>algorithm</strong> is a set of instructions for solving a problem or accomplishing a task.</div>
           </div>
         </div>
 
@@ -279,138 +216,81 @@ export default function Lesson1() {
             <div className="analogy-icon">🍲</div>
             <div>
               <div className="analogy-label">Recipe Analogy</div>
-              <div className="analogy-text">A cooking recipe is an algorithm — it's a step-by-step set of instructions that always produces the same result when followed correctly. A Salesforce algorithm could be the steps for creating a new user.</div>
+              <div className="analogy-text">A cooking recipe is an algorithm — step-by-step instructions that always produce the same result when followed correctly. A Salesforce algorithm could be the steps for onboarding a new user.</div>
             </div>
           </div>
           <div className="analogy-block" style={{ marginBottom: 0 }}>
             <div className="analogy-icon">👕</div>
             <div>
-              <div className="analogy-label">Laundry Analogy (from slides)</div>
-              <div className="analogy-text">You don't just "do laundry" — you follow steps: Sort → Wash → Dry → Fold → Put away. Skipping or reordering steps produces bad results. Flows work the same way.</div>
+              <div className="analogy-label">Laundry Analogy</div>
+              <div className="analogy-text">You don't just "do laundry" — you follow steps: <strong>Sort → Wash → Dry → Fold → Put away.</strong> Skipping or reordering steps produces bad results. Flows work the same way.</div>
             </div>
           </div>
         </div>
 
         <div className="join-me-box" style={{ marginTop: 20 }}>
-          <div className="join-me-label">Exercise — Algorithm Exercise 1</div>
-          <h4>What's your company's algorithm for creating a Salesforce user?</h4>
-          <p>Have students write out every step they follow when onboarding a new user. This is their first algorithm. Then ask: "Could a Flow automate this?" Usually yes — and that's exactly what Record-Triggered Flows do.</p>
+          <div className="join-me-label">Exercise</div>
+          <h4>Write your company's algorithm for creating a new Salesforce user</h4>
+          <p>Have students list every step they follow when onboarding a new user. This is their first algorithm. Then ask: "Could a Flow automate this?" — almost always yes.</p>
         </div>
       </section>
 
-      {/* TOPIC 5 — Control Structures */}
+      {/* ── TOPIC 5 — Control Structures ── */}
       <section className="topic-section" id="control-structures">
         <h2>Topic 5: Control Structures</h2>
 
-        <div className="definition-box">
+        <div className="definition-box" style={{ borderLeftColor: COLOR }}>
           <div className="definition-box-icon">📖</div>
           <div>
             <div className="definition-label">Definition</div>
-            <div className="definition-text">
-              <strong>Control structures</strong> determine which lines of a program run and how many times. Programs aren't limited to a straight line — they can branch, loop, and skip sections.
-            </div>
+            <div className="definition-text"><strong>Control structures</strong> determine which lines of a program run and how many times. Programs aren't limited to a straight line — they can branch, loop, and skip sections.</div>
           </div>
         </div>
 
         <div className="three-col">
-          <div className="var-card" style={{ borderTop: '4px solid #0176D3' }}>
-            <div className="var-card-type" style={{ color: '#0176D3' }}>Type 1</div>
-            <h4>📋 Sequence</h4>
-            <p>Steps run in order, one after another. Every flow starts here.</p>
-            <div style={{ marginTop: 12, fontSize: '0.82rem', color: '#6B7280', borderLeft: '2px solid #BFDBFE', paddingLeft: 10 }}>
-              <div>Step 1: I'm hungry</div>
-              <div>Step 2: I start my car</div>
-              <div>Step 3: I drive to restaurant</div>
-              <div>Step 4: I eat pizza</div>
-              <div>Step 5: I pay</div>
+          {[
+            { color: '#0369A1', type: 'Type 1', icon: '📋', title: 'Sequence', desc: 'Steps run in order, one after another.', example: 'Step 1: Hungry → Step 2: Start car → Step 3: Drive → Step 4: Eat pizza → Step 5: Pay', flow: 'All elements run in order on canvas' },
+            { color: '#D97706', type: 'Type 2', icon: '🔀', title: 'Conditions', desc: 'The flow decides which path to take based on data.', example: 'IF Stage = "Closed Won" → Show Closed Reason field. ELSE → Hide Closed Reason field.', flow: 'Decision element' },
+            { color: '#7C3AED', type: 'Type 3', icon: '🔁', title: 'Loops', desc: 'Repeat a section of code for each item in a collection.', example: 'FOR EACH Account in varAcctRecs: Update Industry field. END LOOP.', flow: 'Loop element' },
+          ].map(s => (
+            <div key={s.type} className="var-card" style={{ borderTop: `4px solid ${s.color}` }}>
+              <div className="var-card-type" style={{ color: s.color }}>{s.type}</div>
+              <h4>{s.icon} {s.title}</h4>
+              <p style={{ fontSize: '.88rem' }}>{s.desc}</p>
+              <div style={{ marginTop: 10, fontSize: '.8rem', color: '#64748B', borderLeft: `2px solid ${s.color}30`, paddingLeft: 10, fontStyle: 'italic' }}>{s.example}</div>
+              <div style={{ marginTop: 10, fontSize: '.78rem', fontWeight: 700, color: s.color }}>Flow: {s.flow}</div>
             </div>
-            <div style={{ marginTop: 10, fontSize: '0.82rem', fontWeight: 700, color: '#0176D3' }}>Flow elements: All elements in order on the canvas</div>
-          </div>
-
-          <div className="var-card" style={{ borderTop: '4px solid #FE9339' }}>
-            <div className="var-card-type" style={{ color: '#E56000' }}>Type 2</div>
-            <h4>🔀 Conditions</h4>
-            <p>The flow decides which path to take based on data values. One or more branches.</p>
-            <div style={{ marginTop: 12, fontSize: '0.82rem', color: '#6B7280', borderLeft: '2px solid #FED7AA', paddingLeft: 10 }}>
-              <em>IF Stage = "Closed Won"</em><br />
-              → Show Closed Reason field<br />
-              <em>ELSE</em><br />
-              → Hide Closed Reason field
-            </div>
-            <div style={{ marginTop: 10, fontSize: '0.82rem', fontWeight: 700, color: '#E56000' }}>Flow elements: Decision element</div>
-          </div>
-
-          <div className="var-card" style={{ borderTop: '4px solid #7B5EA7' }}>
-            <div className="var-card-type" style={{ color: '#7B5EA7' }}>Type 3</div>
-            <h4>🔁 Loops</h4>
-            <p>Repeat a section of code for each item in a collection.</p>
-            <div style={{ marginTop: 12, fontSize: '0.82rem', color: '#6B7280', borderLeft: '2px solid #DDD6FE', paddingLeft: 10 }}>
-              <em>FOR EACH Account in varAcctRecs:</em><br />
-              → Update the Industry field<br />
-              → Add to output collection<br />
-              END LOOP
-            </div>
-            <div style={{ marginTop: 10, fontSize: '0.82rem', fontWeight: 700, color: '#7B5EA7' }}>Flow elements: Loop element</div>
-          </div>
+          ))}
         </div>
 
         <div className="tip-box">
           <span className="tip-box-icon">⚠️</span>
-          <span><span className="tip-label">Critical — Loops + DML:</span> Never put a Create/Update/Delete Records element INSIDE a loop. This fires one DML per iteration and hits governor limits fast. Collect records in a Collection variable inside the loop, then do ONE bulk DML outside the loop.</span>
+          <span><span className="tip-label">Critical</span>Never put Create/Update/Delete Records <em>inside</em> a loop. This fires one DML per iteration and hits governor limits fast. Collect records in a Collection inside the loop, then do ONE bulk DML outside the loop.</span>
         </div>
       </section>
 
-      {/* TOPIC 6 — Best Practices */}
+      {/* ── TOPIC 6 — Best Practices ── */}
       <section className="topic-section" id="best-practices">
         <h2>Topic 6: Best Practices</h2>
 
-        <div className="concept-card">
-          <h4>The Whiteboard-First Approach</h4>
-          <p>Before touching Flow Builder, always plan on paper or whiteboard. Figure out:</p>
-          <div className="two-col" style={{ marginTop: 12 }}>
-            <ul>
-              <li><strong>Variables</strong> — what data do I need to store?</li>
-              <li><strong>Inputs</strong> — what comes into this flow?</li>
-              <li><strong>Outputs</strong> — what does this flow produce?</li>
-            </ul>
-            <ul>
-              <li><strong>DML</strong> — what database operations are needed?</li>
-              <li><strong>Algorithm</strong> — what are the steps in order?</li>
-              <li><strong>Edge cases</strong> — what can go wrong?</li>
-            </ul>
-          </div>
-          <div className="join-me-box" style={{ marginTop: 12, marginBottom: 0 }}>
-            <div className="join-me-label">Whiteboard Exercise</div>
-            <h4>Always whiteboard BEFORE building in the org</h4>
-            <p>Give students a use case requirement and have them fill out Variables, Inputs, Outputs, and Algorithm on paper before opening Flow Builder. Students who skip this step build flows that need to be rebuilt.</p>
-          </div>
+        <div className="join-me-box">
+          <div className="join-me-label">Whiteboard First</div>
+          <h4>Always plan on paper before opening Flow Builder</h4>
+          <p>Before touching the org, figure out: Variables needed · Inputs · Outputs · DML operations · Algorithm steps · Edge cases. Students who skip this rebuild flows from scratch.</p>
         </div>
 
         <table className="comparison-table">
-          <thead>
-            <tr><th>Best Practice</th><th>Why It Matters</th></tr>
-          </thead>
+          <thead><tr><th>Best Practice</th><th>Why It Matters</th></tr></thead>
           <tbody>
-            <tr>
-              <td>Use camelCase variable names with descriptive words</td>
-              <td>You or a colleague needs to read this flow 6 months from now</td>
-            </tr>
-            <tr>
-              <td>Always add Fault paths to data elements</td>
-              <td>Default fault message is useless to users and admins debugging</td>
-            </tr>
-            <tr>
-              <td>Use entry criteria on Record-Triggered Flows</td>
-              <td>Reduce unnecessary executions → conserve governor limits</td>
-            </tr>
-            <tr>
-              <td>Multiple small focused flows per object, not one giant flow</td>
-              <td>Easier testing, maintenance, debugging, and better performance</td>
-            </tr>
-            <tr>
-              <td>Bulk DML outside loops</td>
-              <td>Avoid hitting the 150 DML operations governor limit</td>
-            </tr>
+            {[
+              ['Use camelCase variable names with descriptive words', 'You or a colleague needs to read this flow 6 months from now'],
+              ['Always add Fault paths to data elements', 'Default fault message is useless — "An unhandled fault has occurred" helps no one'],
+              ['Use entry criteria on Record-Triggered Flows', 'Reduce unnecessary executions → conserve governor limits'],
+              ['Multiple small focused flows per object, not one giant flow', 'Easier testing, maintenance, debugging, and better performance'],
+              ['Bulk DML outside loops', 'Avoid hitting the 150 DML operations governor limit'],
+            ].map(([practice, why]) => (
+              <tr key={practice}><td>{practice}</td><td>{why}</td></tr>
+            ))}
           </tbody>
         </table>
       </section>
@@ -418,12 +298,8 @@ export default function Lesson1() {
       <Quiz questions={quizData.l1} title="Lesson 1 Knowledge Check — Variables & Data Types" />
 
       <div className="page-nav">
-        <Link to="/lesson/0" className="page-nav-btn">
-          ← Lesson 0: Course Overview
-        </Link>
-        <Link to="/lesson/2" className="page-nav-btn primary">
-          Lesson 2: Screen Flows →
-        </Link>
+        <Link to="/lesson/0" className="page-nav-btn">← Lesson 0: Course Overview</Link>
+        <Link to="/lesson/2" className="page-nav-btn primary">Lesson 2: Screen Flows →</Link>
       </div>
     </>
   );
