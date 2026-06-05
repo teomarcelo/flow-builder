@@ -1,54 +1,9 @@
 import { Link } from 'react-router-dom';
 import Quiz from '../components/Quiz';
+import { quizData } from '../data/curriculum';
 
-const COLOR = '#0369A1';
+const COLOR = '#0176D3';
 const COLOR_BG = '#EFF6FF';
-
-const quizL0 = [
-  {
-    id: 'l0q1',
-    question: 'What is a Flow Interview?',
-    options: [
-      'A job interview at Salesforce',
-      'An instance of a currently executing flow',
-      'A review of flow performance metrics',
-      'A test run before activating a flow'
-    ],
-    correct: 1,
-    explanation: 'A Flow Interview is a single running instance of a flow. Each time a flow is triggered, a new Flow Interview is created — like the recipe vs. actually cooking the meal.'
-  },
-  {
-    id: 'l0q2',
-    question: 'Which flow type requires a user to interact with it?',
-    options: ['Record-Triggered Flow', 'Schedule-Triggered Flow', 'Screen Flow', 'Autolaunched Flow'],
-    correct: 2,
-    explanation: 'Screen Flows have a user interface — they show screens and collect input. All other flow types run automatically in the background.'
-  },
-  {
-    id: 'l0q3',
-    question: 'Where do flows primarily run in the Salesforce application layers?',
-    options: [
-      'User Interface layer only',
-      'Logic and Data layers (Screen Flows also touch UI)',
-      'Data layer only',
-      'All three layers equally'
-    ],
-    correct: 1,
-    explanation: 'Flows operate in the Business Logic/Automation and Data layers. Screen Flows additionally touch the User Interface layer because they display screens to users.'
-  },
-  {
-    id: 'l0q4',
-    question: 'What is the correct 3-step framework for translating a use case into a Flow?',
-    options: [
-      'Think → Build → Test',
-      'Say it in Plain Language → Say it in Salesforce → Say it in Flow',
-      'Objects → Fields → Logic',
-      'Requirements → Design → Deploy'
-    ],
-    correct: 1,
-    explanation: 'The course framework: (1) Plain Language — what does the user need? (2) Salesforce — what objects/operations? (3) Flow — "I need a Get Records to look up X, then an Update Records..."'
-  }
-];
 
 export default function Lesson0() {
   return (
@@ -201,7 +156,7 @@ export default function Lesson0() {
         </div>
       </section>
 
-      <Quiz questions={quizL0} title="Lesson 0 Knowledge Check" />
+      <Quiz questions={quizData.l0} title="Lesson 0 Knowledge Check — Flow Fundamentals" />
 
       <div className="page-nav">
         <span />

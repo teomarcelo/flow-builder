@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { lessons } from '../data/curriculum';
 
-const lessonColors = ['#0369A1', '#7C3AED', '#0F766E', '#D97706'];
+const lessonColors = ['#0176D3', '#7C3AED', '#0F766E', '#D97706'];
 const lessonBgs   = ['#EFF6FF', '#F5F3FF', '#F0FDFA', '#FFFBEB'];
 
 export default function Home() {
@@ -68,9 +68,9 @@ export default function Home() {
 
       <div className="highlight-row fade-up fade-up-4">
         {[
-          { val: '4', label: 'Lessons', color: '#0369A1' },
-          { val: '22', label: 'Topics', color: '#7C3AED' },
-          { val: '17', label: 'Quiz Questions', color: '#0F766E' },
+          { val: '4', label: 'Lessons', color: '#0176D3' },
+          { val: '24', label: 'Topics', color: '#7C3AED' },
+          { val: '21', label: 'Quiz Questions', color: '#0F766E' },
           { val: '3', label: 'Days at Dreamforce', color: '#D97706' },
         ].map((item) => (
           <div className="highlight-box" key={item.label}>
@@ -78,6 +78,26 @@ export default function Home() {
             <div className="highlight-box-label">{item.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="fade-up fade-up-5" style={{ marginBottom: 32 }}>
+        <Link to="/quick-ref" style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          background: '#0D1421', color: '#F8FAFC', borderRadius: 16,
+          padding: '20px 28px', textDecoration: 'none', border: '1px solid rgba(255,255,255,.07)',
+          boxShadow: '0 4px 20px rgba(0,0,0,.15)',
+          transition: 'all .2s ease',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = '#1E293B'}
+        onMouseLeave={e => e.currentTarget.style.background = '#0D1421'}
+        >
+          <div>
+            <div style={{ fontSize: '.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.12em', color: '#14B8A6', marginBottom: 4 }}>✦ Reference</div>
+            <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '1.05rem' }}>Quick Reference Sheet</div>
+            <div style={{ fontSize: '.85rem', color: 'rgba(255,255,255,.5)', marginTop: 2 }}>All elements, naming conventions, DML ops, and best practices on one page</div>
+          </div>
+          <span style={{ fontSize: '1.3rem', color: 'rgba(255,255,255,.3)' }}>→</span>
+        </Link>
       </div>
     </>
   );

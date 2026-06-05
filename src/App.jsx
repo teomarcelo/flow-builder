@@ -5,6 +5,7 @@ import Lesson0 from './pages/Lesson0';
 import Lesson1 from './pages/Lesson1';
 import Lesson2 from './pages/Lesson2';
 import Lesson3 from './pages/Lesson3';
+import QuickRef from './pages/QuickRef';
 import './index.css';
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/lesson/1" element={<Lesson1 />} />
           <Route path="/lesson/2" element={<Lesson2 />} />
           <Route path="/lesson/3" element={<Lesson3 />} />
+          <Route path="/quick-ref" element={<QuickRef />} />
         </Routes>
       </Layout>
     </BrowserRouter>
