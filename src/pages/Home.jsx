@@ -33,10 +33,28 @@ const LessonIcons = [
 export default function Home() {
   return (
     <>
+      {/* Aurora background orbs */}
+      <div className="home-aurora" aria-hidden="true">
+        <div className="home-aurora-orb home-aurora-orb-1" />
+        <div className="home-aurora-orb home-aurora-orb-2" />
+        <div className="home-aurora-orb home-aurora-orb-3" />
+      </div>
+
       <div className="home-hero fade-up">
-        <div className="home-hero-badge">ADX301 · Trailblazer Bootcamp · Dreamforce 2026</div>
+        {/* Eyebrow with pulsing dot */}
+        <div className="home-eyebrow">
+          <span className="home-eyebrow-dot" aria-hidden="true" />
+          ADX301 · Trailblazer Bootcamp · Dreamforce 2026
+        </div>
         <h1>Admin Flow Builder<br />Study Guide</h1>
-        <p>Your complete visual reference for ADX301 — the most in-depth training material for Salesforce Flow Builder. Deep technical explanations, visual diagrams, annotated exercise walkthroughs, and exam trap callouts. Built from the official bootcamp curriculum.</p>
+        <p className="home-hero-sub">Your complete visual reference for ADX301 — deep technical explanations, annotated exercise walkthroughs, and exam trap callouts. Built from the official bootcamp curriculum.</p>
+        <div className="home-hero-cta">
+          <Link to="/lesson/0" className="home-cta-primary">
+            Start Lesson 1
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </Link>
+          <Link to="/quick-ref" className="home-cta-secondary">Quick Reference</Link>
+        </div>
       </div>
 
       <div className="lesson-cards">
@@ -45,7 +63,10 @@ export default function Home() {
             key={l.id}
             to={`/lesson/${l.number}`}
             className="lesson-card fade-up"
-            style={{ animationDelay: `${i * 0.07 + 0.05}s` }}
+            style={{
+              animationDelay: `${i * 0.07 + 0.05}s`,
+              '--card-glow': lessonColors[i] + '26',
+            }}
           >
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0, height: 3,
@@ -82,7 +103,7 @@ export default function Home() {
         </div>
         <div className="two-col">
           <div>
-            <div style={{ fontSize: '.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: '#0369A1', marginBottom: 8 }}>For your preparation</div>
+            <div style={{ fontSize: '.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: '#7DD3FC', marginBottom: 8 }}>For your preparation</div>
             <ul>
               <li>Read each lesson as a student first — flag anything you'd hesitate on live</li>
               <li>Use ExamTrap callouts to prep for common certification gotchas</li>
@@ -91,7 +112,7 @@ export default function Home() {
             </ul>
           </div>
           <div>
-            <div style={{ fontSize: '.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: '#0F766E', marginBottom: 8 }}>For your students</div>
+            <div style={{ fontSize: '.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: '#5EEAD4', marginBottom: 8 }}>For your students</div>
             <ul>
               <li>Share the URL after each lesson as a take-home reference</li>
               <li>Use the quiz section for end-of-lesson review activities</li>
@@ -117,17 +138,7 @@ export default function Home() {
       </div>
 
       <div className="fade-up fade-up-5" style={{ marginBottom: 32 }}>
-        <Link to="/quick-ref" style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          background: '#0D1421', color: '#F8FAFC', borderRadius: 16,
-          padding: '20px 28px', textDecoration: 'none', border: '1px solid rgba(255,255,255,.07)',
-          boxShadow: '0 4px 20px rgba(0,0,0,.15)',
-          transition: 'all .2s ease',
-          gap: 16,
-        }}
-        onMouseEnter={e => e.currentTarget.style.background = '#1E293B'}
-        onMouseLeave={e => e.currentTarget.style.background = '#0D1421'}
-        >
+        <Link to="/quick-ref" className="quick-ref-banner">
           <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
             <div style={{ width: 40, height: 40, background: 'rgba(20,184,166,.15)', border: '1px solid rgba(20,184,166,.25)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#14B8A6', flexShrink: 0 }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>

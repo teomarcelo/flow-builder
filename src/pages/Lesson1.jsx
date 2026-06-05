@@ -4,7 +4,7 @@ import { quizData } from '../data/curriculum';
 import { ExamTrap, DeepDive, MistakeCard, StepList, BulkifyDiagram } from '../components/LessonComponents';
 
 const COLOR = '#7C3AED';
-const COLOR_BG = '#F5F3FF';
+const COLOR_BG = 'rgba(124,58,237,.12)';
 
 export default function Lesson1() {
   return (
@@ -16,7 +16,7 @@ export default function Lesson1() {
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: '1px solid #DDD6FE' }}>
+        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: `1px solid ${COLOR}40` }}>
           Lesson 1
         </div>
         <h1>Think Like a Developer</h1>
@@ -26,7 +26,7 @@ export default function Lesson1() {
       {/* ── FRAMING ── */}
       <section className="topic-section fade-up fade-up-1" id="framing">
         <div className="analogy-block">
-          <div className="analogy-icon" style={{ background: '#F5F3FF', color: COLOR }}>
+          <div className="analogy-icon" style={{ background: 'rgba(124,58,237,.12)', color: COLOR }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </div>
           <div>
@@ -56,7 +56,7 @@ export default function Lesson1() {
 
         <div className="two-col" style={{ marginBottom: 24 }}>
           <div className="analogy-block" style={{ marginBottom: 0 }}>
-            <div className="analogy-icon" style={{ background: '#F5F3FF', color: COLOR }}>
+            <div className="analogy-icon" style={{ background: 'rgba(124,58,237,.12)', color: COLOR }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
             </div>
             <div>
@@ -233,7 +233,7 @@ export default function Lesson1() {
               </div>
             </div>
             <div className="analogy-block" style={{ marginBottom: 0 }}>
-              <div className="analogy-icon" style={{ background: '#F0FDFA', color: '#0F766E', fontSize: '1.1rem' }}>
+              <div className="analogy-icon" style={{ background: 'rgba(15,118,110,.12)', color: '#5EEAD4', fontSize: '1.1rem' }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6 6l.82-.82a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               </div>
               <div>
@@ -253,7 +253,7 @@ export default function Lesson1() {
               </div>
             </div>
             <div className="analogy-block" style={{ marginBottom: 0 }}>
-              <div className="analogy-icon" style={{ background: '#F5F3FF', color: COLOR, fontSize: '1.1rem' }}>
+              <div className="analogy-icon" style={{ background: 'rgba(124,58,237,.12)', color: COLOR, fontSize: '1.1rem' }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
               </div>
               <div>
@@ -314,7 +314,7 @@ export default function Lesson1() {
 
         <div className="two-col">
           <div className="analogy-block" style={{ marginBottom: 0 }}>
-            <div className="analogy-icon" style={{ background: '#FFF7ED', color: '#D97706' }}>
+            <div className="analogy-icon" style={{ background: 'rgba(217,119,6,.12)', color: '#FCD34D' }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
             </div>
             <div>
@@ -323,7 +323,7 @@ export default function Lesson1() {
             </div>
           </div>
           <div className="analogy-block" style={{ marginBottom: 0 }}>
-            <div className="analogy-icon" style={{ background: '#EFF6FF', color: '#0176D3' }}>
+            <div className="analogy-icon" style={{ background: 'rgba(1,118,211,.12)', color: '#7DD3FC' }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7 11 2-2-2-2"/><path d="M11 13h4"/><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></svg>
             </div>
             <div>
@@ -425,7 +425,7 @@ export default function Lesson1() {
               </div>
               <h4 style={{ marginBottom: 8 }}>{s.title}</h4>
               <p style={{ fontSize: '.85rem', marginBottom: 10 }}>{s.desc}</p>
-              <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8, padding: '10px 12px', fontSize: '.8rem', color: 'var(--fg-3)', fontStyle: 'italic', marginBottom: 10 }}>
+              <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 8, padding: '10px 12px', fontSize: '.8rem', color: 'var(--fg-3)', fontStyle: 'italic', marginBottom: 10 }}>
                 {s.example}
               </div>
               <div style={{ fontSize: '.76rem', fontWeight: 700, color: s.color, marginBottom: 6 }}>Flow: {s.flowEl}</div>

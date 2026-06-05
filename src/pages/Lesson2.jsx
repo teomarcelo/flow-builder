@@ -4,7 +4,7 @@ import { quizData } from '../data/curriculum';
 import { ExamTrap, DeepDive, MistakeCard, StepList } from '../components/LessonComponents';
 
 const COLOR = '#0F766E';
-const COLOR_BG = '#F0FDFA';
+const COLOR_BG = 'rgba(15,118,110,.12)';
 
 export default function Lesson2() {
   return (
@@ -14,7 +14,7 @@ export default function Lesson2() {
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: '1px solid #99F6E4' }}>
+        <div className="lesson-badge" style={{ background: COLOR_BG, color: '#5EEAD4', border: `1px solid ${COLOR}40` }}>
           Lesson 2
         </div>
         <h1>Plan &amp; Build Screen Flows</h1>
@@ -36,8 +36,8 @@ export default function Lesson2() {
             </div>
           </div>
           <div className="two-col">
-            <div style={{ background: '#EFF6FF', borderRadius: 10, padding: 16 }}>
-              <div style={{ fontSize: '.68rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: '#0369A1', marginBottom: 6 }}>Osman Parks — Sales User</div>
+            <div style={{ background: 'rgba(1,118,211,.1)', borderRadius: 10, padding: 16 }}>
+              <div style={{ fontSize: '.68rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', color: '#7DD3FC', marginBottom: 6 }}>Osman Parks — Sales User</div>
               <p style={{ fontStyle: 'italic', fontSize: '.9rem', marginBottom: 0 }}>"We need a quick way to create Opportunities for our Prospect Accounts. The current process is too many clicks."</p>
             </div>
             <div style={{ background: COLOR_BG, borderRadius: 10, padding: 16 }}>
@@ -83,7 +83,7 @@ export default function Lesson2() {
         </div>
 
         <div className="analogy-block">
-          <div className="analogy-icon" style={{ background: '#F0FDF4', color: '#0F766E' }}>
+          <div className="analogy-icon" style={{ background: 'rgba(15,118,110,.12)', color: '#5EEAD4' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
           </div>
           <div>
@@ -112,7 +112,7 @@ export default function Lesson2() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               ), label: 'Components', desc: 'Custom Lightning Web Components, datatable for multi-record display, address input' },
             ].map(c => (
-              <div key={c.label} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 10, padding: 14 }}>
+              <div key={c.label} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10, padding: 14 }}>
                 <div style={{ width: 26, height: 26, background: c.color + '15', border: `1px solid ${c.color}30`, borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.color, marginBottom: 8 }}>{c.icon}</div>
                 <div style={{ fontWeight: 600, fontSize: '.85rem', marginBottom: 4 }}>{c.label}</div>
                 <div style={{ fontSize: '.8rem', color: 'var(--fg-3)' }}>{c.desc}</div>
@@ -203,11 +203,11 @@ export default function Lesson2() {
         </div>
 
         <div className="two-col" style={{ marginBottom: 24 }}>
-          <div className="before-col" style={{ borderRadius: 'var(--r-lg)', border: '1px solid #FECDD3', background: '#FFF1F2', padding: 16 }}>
+          <div className="before-col" style={{ borderRadius: 'var(--r-lg)', border: '1px solid rgba(220,38,38,.2)', background: 'rgba(220,38,38,.07)', padding: 16 }}>
             <div style={{ fontSize: '.68rem', fontWeight: 800, color: 'var(--red)', textTransform: 'uppercase', marginBottom: 8 }}>Without Field Visibility</div>
             <p style={{ fontSize: '.88rem', marginBottom: 0 }}>Put "Closed Reason" on a second screen. User fills out Stage on Screen 1 → clicks Next → sees Closed Reason on Screen 2 regardless of Stage. Need a Decision element to branch between two different screens. Two separate screens to maintain. No real-time feedback.</p>
           </div>
-          <div className="after-col" style={{ borderRadius: 'var(--r-lg)', border: '1px solid #BBF7D0', background: '#F0FDF4', padding: 16 }}>
+          <div className="after-col" style={{ borderRadius: 'var(--r-lg)', border: '1px solid rgba(5,150,105,.2)', background: 'rgba(5,150,105,.07)', padding: 16 }}>
             <div style={{ fontSize: '.68rem', fontWeight: 800, color: 'var(--green)', textTransform: 'uppercase', marginBottom: 8 }}>With Field Visibility</div>
             <p style={{ fontSize: '.88rem', marginBottom: 0 }}>Both Stage and Closed Reason live on the same screen. Set Closed Reason visibility: show when Stage = "Closed Won" OR Stage = "Closed Lost". As soon as user changes the Stage picklist, Closed Reason appears/disappears instantly. Single screen. No Decision element needed.</p>
           </div>
@@ -484,7 +484,7 @@ Link URL:    /{!varOppRec.Id}
                 <p style={{ fontSize: '.84rem', marginBottom: 10 }}>{s.desc}</p>
                 <div style={{ fontSize: '.76rem', fontWeight: 600, color: s.color, marginBottom: 4 }}>Best for:</div>
                 <div style={{ fontSize: '.78rem', color: 'var(--fg-3)', marginBottom: 10 }}>{s.bestFor}</div>
-                <div style={{ fontSize: '.72rem', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 6, padding: '8px 10px', color: 'var(--fg-3)' }}>{s.howTo}</div>
+                <div style={{ fontSize: '.72rem', background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 6, padding: '8px 10px', color: 'var(--fg-3)' }}>{s.howTo}</div>
               </div>
             ))}
           </div>

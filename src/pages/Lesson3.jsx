@@ -11,7 +11,7 @@ import {
 } from '../components/LessonComponents';
 
 const COLOR = '#D97706';
-const COLOR_BG = '#FFFBEB';
+const COLOR_BG = 'rgba(217,119,6,.12)';
 
 export default function Lesson3() {
   return (
@@ -21,7 +21,7 @@ export default function Lesson3() {
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: '1px solid #FDE68A' }}>
+        <div className="lesson-badge" style={{ background: COLOR_BG, color: '#FCD34D', border: `1px solid ${COLOR}40` }}>
           Lesson 3
         </div>
         <h1>Plan &amp; Build Record-Triggered Flows</h1>
@@ -210,7 +210,7 @@ export default function Lesson3() {
               { color: '#0F766E', case: 'Price Increase Detection', logic: '{!$Record.Amount} > {!$Record__Prior.Amount} → log a price audit trail record on a custom object' },
               { color: '#7C3AED', case: 'Status Regression Prevention', logic: '{!$Record.Stage__c} is earlier in funnel than {!$Record__Prior.Stage__c} → Custom Error blocking the downgrade' },
             ].map(uc => (
-              <div key={uc.case} style={{ display: 'flex', gap: 12, background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 10, padding: '12px 14px', alignItems: 'flex-start' }}>
+              <div key={uc.case} style={{ display: 'flex', gap: 12, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 10, padding: '12px 14px', alignItems: 'flex-start' }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: uc.color, marginTop: 6, flexShrink: 0 }} />
                 <div>
                   <div style={{ fontWeight: 600, fontSize: '.88rem', marginBottom: 4 }}>{uc.case}</div>
@@ -330,7 +330,7 @@ export default function Lesson3() {
             <div className="after-col">
               <div className="after-label">Record-Triggered Flow — Pre-cooked</div>
               <p style={{ fontSize: '.88rem' }}>Flow calculates the value once when the record is saved, stores it in a regular field. Page load just reads the stored value — zero computation. Formula field replaced by a plain Text or URL field. Value is always current because the flow runs on Create AND Update.</p>
-              <div style={{ background: '#F0FDF4', border: '1px solid var(--green-border)', borderRadius: 8, padding: 12, marginTop: 8 }}>
+              <div style={{ background: 'rgba(5,150,105,.1)', border: '1px solid rgba(5,150,105,.25)', borderRadius: 8, padding: 12, marginTop: 8 }}>
                 <div style={{ fontSize: '.72rem', fontWeight: 700, color: 'var(--green)', marginBottom: 4 }}>The Math</div>
                 <div style={{ fontSize: '.82rem', color: '#14532D' }}>1 flow execution on save × 1,000 Account saves per day = <strong>1,000 DML statements total</strong>. Page loads → 0 compute. Trade: storage + save overhead for faster reads.</div>
               </div>
@@ -425,7 +425,7 @@ export default function Lesson3() {
               { color: '#0176D3', n: '02', title: 'Testability', desc: 'Test the subflow in isolation. Debug sharing errors in one place. Changes propagate to all calling flows automatically.' },
               { color: '#7C3AED', n: '03', title: 'Readability', desc: 'The parent flow canvas stays clean: "sub090 Share Record." Complexity is encapsulated. Any admin can read the parent flow without understanding every detail of sharing logic.' },
             ].map(s => (
-              <div key={s.n} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 12, padding: 14 }}>
+              <div key={s.n} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: 14 }}>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.65rem', fontWeight: 700, color: s.color, marginBottom: 6 }}>{s.n}</div>
                 <div style={{ fontWeight: 700, fontSize: '.88rem', marginBottom: 6 }}>{s.title}</div>
                 <div style={{ fontSize: '.82rem', color: 'var(--fg-3)' }}>{s.desc}</div>
@@ -490,7 +490,7 @@ export default function Lesson3() {
         </div>
 
         <div className="analogy-block">
-          <div className="analogy-icon" style={{ background: '#FFFBEB', color: '#D97706' }}>
+          <div className="analogy-icon" style={{ background: 'rgba(217,119,6,.12)', color: '#FCD34D' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
           <div>
@@ -509,7 +509,7 @@ export default function Lesson3() {
                 { color: '#0F766E', label: '30 days after LastActivityDate', detail: 'Auto-close stale Opportunities with "No Activity" reason' },
                 { color: '#7C3AED', label: '1 day before ContractEndDate__c', detail: 'Notify account team and trigger renewal workflow' },
               ].map(uc => (
-                <div key={uc.label} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8, padding: '10px 12px' }}>
+                <div key={uc.label} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 8, padding: '10px 12px' }}>
                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: uc.color, marginTop: 5, flexShrink: 0 }} />
                   <div>
                     <div style={{ fontWeight: 600, fontSize: '.84rem', color: uc.color }}>{uc.label}</div>
