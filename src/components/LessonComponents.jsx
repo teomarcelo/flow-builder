@@ -1,4 +1,5 @@
 // Shared premium lesson components — visual diagrams, callout cards, matrices
+import { motion } from 'framer-motion';
 
 // ─────────────────────────────────────────────
 // SVG Icons (no emojis, no external libs)
@@ -58,18 +59,28 @@ const IcMonitor = () => (
 );
 
 // ─────────────────────────────────────────────
+// Shared animation variants
+// ─────────────────────────────────────────────
+const fadeInFromLeft = {
+  initial: { opacity: 0, x: -10 },
+  whileInView: { opacity: 1, x: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.4 },
+};
+
+// ─────────────────────────────────────────────
 // ExamTrap — exam-critical gotcha callouts
 // ─────────────────────────────────────────────
 export function ExamTrap({ title, children }) {
   return (
-    <div className="exam-trap">
+    <motion.div className="exam-trap" {...fadeInFromLeft}>
       <div className="exam-trap-header">
         <span className="exam-trap-icon"><IcTarget /></span>
         <span className="exam-trap-badge">EXAM TRAP</span>
         {title && <span className="exam-trap-title">{title}</span>}
       </div>
       <div className="exam-trap-body">{children}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -78,14 +89,14 @@ export function ExamTrap({ title, children }) {
 // ─────────────────────────────────────────────
 export function DeepDive({ title = 'Why This Exists', children }) {
   return (
-    <div className="deep-dive">
+    <motion.div className="deep-dive" {...fadeInFromLeft}>
       <div className="deep-dive-header">
         <span className="deep-dive-icon"><IcLayers /></span>
         <span className="deep-dive-badge">DEEP DIVE</span>
         <span className="deep-dive-title">{title}</span>
       </div>
       <div className="deep-dive-body">{children}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -94,13 +105,13 @@ export function DeepDive({ title = 'Why This Exists', children }) {
 // ─────────────────────────────────────────────
 export function MistakeCard({ children }) {
   return (
-    <div className="mistake-card">
+    <motion.div className="mistake-card" {...fadeInFromLeft}>
       <div className="mistake-card-header">
         <span className="mistake-card-icon"><IcAlertTriangle /></span>
         <span className="mistake-card-badge">COMMON MISTAKE</span>
       </div>
       <div className="mistake-card-body">{children}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -118,7 +129,14 @@ export function StepList({ title, intro, steps }) {
       )}
       <div className="step-list-body">
         {steps.map((step, i) => (
-          <div key={i} className="step-item">
+          <motion.div
+            key={i}
+            className="step-item"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.3, delay: i * 0.08 }}
+          >
             <div className="step-num">{String(i + 1).padStart(2, '0')}</div>
             <div className="step-content">
               {typeof step === 'string' ? (
@@ -134,7 +152,7 @@ export function StepList({ title, intro, steps }) {
                 </>
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
@@ -209,7 +227,14 @@ export function SaveOrderDiagram() {
     <div className="sod-wrapper">
       {SOD_ZONES.map((zone, zi) => (
         <div key={zone.id}>
-          <div className="sod-zone" style={{ '--zone-color': zone.color, '--zone-bg': zone.bg, '--zone-border': zone.border }}>
+          <motion.div
+            className="sod-zone"
+            style={{ '--zone-color': zone.color, '--zone-bg': zone.bg, '--zone-border': zone.border }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: zi * 0.15 }}
+          >
             <div className="sod-zone-header">
               <span className="sod-zone-label" style={{ color: zone.color }}>{zone.label}</span>
               <span className="sod-zone-sub">{zone.sub}</span>
@@ -235,7 +260,7 @@ export function SaveOrderDiagram() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
           {zi < SOD_ZONES.length - 1 && (
             <div className="sod-milestone" style={{ '--ms-color': MILESTONES[zi].color }}>
               <div className="sod-milestone-line" />
@@ -262,7 +287,13 @@ export function BulkifyDiagram() {
   return (
     <div className="bulkify-grid">
       {/* BAD pattern */}
-      <div className="bulkify-col">
+      <motion.div
+        className="bulkify-col"
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="bulkify-col-head bulkify-bad">
           <span className="bulkify-col-badge"><IcX /> Anti-Pattern</span>
           <span className="bulkify-col-sub">DML inside the loop — fails at record 151</span>
@@ -291,10 +322,16 @@ export function BulkifyDiagram() {
             <div style={{ fontSize: '.78rem', marginTop: 4, opacity: .75 }}>Flow crashes on record 151 of 500</div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* GOOD pattern */}
-      <div className="bulkify-col">
+      <motion.div
+        className="bulkify-col"
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
         <div className="bulkify-col-head bulkify-good">
           <span className="bulkify-col-badge"><IcCheck /> Correct Pattern</span>
           <span className="bulkify-col-sub">Build collection → single bulk DML outside</span>
@@ -332,7 +369,7 @@ export function BulkifyDiagram() {
             <div style={{ fontSize: '.78rem', marginTop: 4, opacity: .85 }}>149 DML operations remaining in limit</div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -386,7 +423,14 @@ export function ActionsMatrix() {
         row.group ? (
           <div key={i} className="actions-matrix-group">{row.group}</div>
         ) : (
-          <div key={i} className="actions-matrix-row">
+          <motion.div
+            key={i}
+            className="actions-matrix-row"
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.25, delay: i * 0.03 }}
+          >
             <div className="actions-matrix-cap">{row.label}</div>
             <div className={`actions-matrix-cell ${row.before ? 'yes' : 'no'}`}>
               {row.before ? <IcCheck /> : <IcX />}
@@ -396,7 +440,7 @@ export function ActionsMatrix() {
               {(row.after === true || row.after === 'cost') ? <IcCheck /> : <IcX />}
               {row.afterNote && <span className="cell-note">{row.afterNote}</span>}
             </div>
-          </div>
+          </motion.div>
         )
       ))}
       <div className="actions-matrix-legend">
@@ -420,9 +464,12 @@ export function PerformanceBar({ title, items }) {
         <div key={i} className="perf-bar-row">
           <div className="perf-bar-label">{item.label}</div>
           <div className="perf-bar-track">
-            <div
+            <motion.div
               className={`perf-bar-fill ${item.variant || 'neutral'}`}
-              style={{ width: `${Math.max(4, (item.value / max) * 100)}%` }}
+              initial={{ width: 0 }}
+              whileInView={{ width: `${Math.max(4, (item.value / max) * 100)}%` }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: i * 0.1 }}
             />
           </div>
           <div className="perf-bar-val">{item.display}</div>
@@ -442,11 +489,18 @@ export function FlowTypeDecision() {
       <div className="ftd-branches">
         <div className="ftd-branch">
           <div className="ftd-branch-label yes">YES</div>
-          <div className="ftd-result" style={{ '--result-color': '#0176D3' }}>
+          <motion.div
+            className="ftd-result"
+            style={{ '--result-color': '#0176D3' }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
             <div className="ftd-result-icon"><IcMonitor /></div>
             <div className="ftd-result-name">Screen Flow</div>
             <div className="ftd-result-examples">New record wizards · Guided data entry · Service scripts</div>
-          </div>
+          </motion.div>
         </div>
         <div className="ftd-branch">
           <div className="ftd-branch-label no">NO → Automated</div>
@@ -454,11 +508,18 @@ export function FlowTypeDecision() {
           <div className="ftd-sub-branches">
             <div className="ftd-branch">
               <div className="ftd-branch-label yes">YES</div>
-              <div className="ftd-result" style={{ '--result-color': '#D97706' }}>
+              <motion.div
+                className="ftd-result"
+                style={{ '--result-color': '#D97706' }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+              >
                 <div className="ftd-result-icon"><IcZap /></div>
                 <div className="ftd-result-name">Record-Triggered Flow</div>
                 <div className="ftd-result-examples">Auto-update fields · Validate on save · Create related records</div>
-              </div>
+              </motion.div>
             </div>
             <div className="ftd-branch">
               <div className="ftd-branch-label no">NO</div>
@@ -466,19 +527,33 @@ export function FlowTypeDecision() {
               <div className="ftd-sub-branches">
                 <div className="ftd-branch">
                   <div className="ftd-branch-label yes">YES</div>
-                  <div className="ftd-result" style={{ '--result-color': '#0F766E' }}>
+                  <motion.div
+                    className="ftd-result"
+                    style={{ '--result-color': '#0F766E' }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.3 }}
+                  >
                     <div className="ftd-result-icon"><IcClock /></div>
                     <div className="ftd-result-name">Schedule-Triggered Flow</div>
                     <div className="ftd-result-examples">Nightly cleanup · Weekly reminders · Batch updates</div>
-                  </div>
+                  </motion.div>
                 </div>
                 <div className="ftd-branch">
                   <div className="ftd-branch-label no">NO</div>
-                  <div className="ftd-result" style={{ '--result-color': '#7C3AED' }}>
+                  <motion.div
+                    className="ftd-result"
+                    style={{ '--result-color': '#7C3AED' }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.4 }}
+                  >
                     <div className="ftd-result-icon"><IcRefresh /></div>
                     <div className="ftd-result-name">Autolaunched Flow</div>
                     <div className="ftd-result-examples">Called by Apex · REST API trigger · Subflow module</div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>

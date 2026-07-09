@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
@@ -33,11 +34,16 @@ const ResetIcon = () => (
 function ScoreResult({ score, total, onReset }) {
   const pct = Math.round((score / total) * 100);
   const grade = pct >= 80 ? { label: 'Excellent!', color: '#059669', bg: 'rgba(5,150,105,.12)', border: '#34D399' }
-    : pct >= 60 ? { label: 'Good job!', color: '#0369A1', bg: 'rgba(3,105,161,.10)', border: '#7DD3FC' }
+    : pct >= 60 ? { label: 'Good job!', color: '#0369A1', bg: 'rgba(3,105,161,.10)', border: '#BFDBFE' }
     : { label: 'Keep studying!', color: '#D97706', bg: 'rgba(217,119,6,.10)', border: '#FCD34D' };
 
   return (
-    <div className="quiz-result">
+    <motion.div
+      className="quiz-result"
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+    >
       <div className="quiz-result-icon" style={{ color: grade.color }}>
         <TrophyIcon />
       </div>
@@ -59,7 +65,7 @@ function ScoreResult({ score, total, onReset }) {
       <button className="quiz-reset-btn" onClick={onReset}>
         <ResetIcon /> Try again
       </button>
-    </div>
+    </motion.div>
   );
 }
 
@@ -68,6 +74,7 @@ export default function Quiz({ questions, title = 'Knowledge Check' }) {
   const [answers, setAnswers] = useState(Array(questions.length).fill(null));
   const [done, setDone] = useState(false);
   const [runKey, setRunKey] = useState(0);
+  const [direction, setDirection] = useState(1);
 
   const answered = answers[current];
   const progress = answers.filter(a => a !== null).length;
@@ -81,6 +88,7 @@ export default function Quiz({ questions, title = 'Knowledge Check' }) {
 
   function handleNext() {
     if (current < questions.length - 1) {
+      setDirection(1);
       setCurrent(c => c + 1);
     } else {
       setDone(true);
@@ -88,7 +96,10 @@ export default function Quiz({ questions, title = 'Knowledge Check' }) {
   }
 
   function handlePrev() {
-    if (current > 0) setCurrent(c => c - 1);
+    if (current > 0) {
+      setDirection(-1);
+      setCurrent(c => c - 1);
+    }
   }
 
   function handleReset() {
@@ -96,10 +107,35 @@ export default function Quiz({ questions, title = 'Knowledge Check' }) {
     setAnswers(Array(questions.length).fill(null));
     setDone(false);
     setRunKey(k => k + 1);
+    setDirection(1);
   }
 
   const score = answers.filter((a, i) => a === questions[i].correct).length;
   const q = questions[current];
+
+  const cardVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? 60 : -60,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir) => ({
+      x: dir > 0 ? -60 : 60,
+      opacity: 0,
+    }),
+  };
+
+  const optionVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.06, duration: 0.3, ease: 'easeOut' },
+    }),
+  };
 
   return (
     <div className="quiz-section" key={runKey}>
@@ -112,16 +148,17 @@ export default function Quiz({ questions, title = 'Knowledge Check' }) {
         </div>
         <div className="quiz-progress-ring" aria-label={`${progress} of ${questions.length} answered`}>
           <svg width="52" height="52" viewBox="0 0 52 52">
-            <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,.1)" strokeWidth="3"/>
-            <circle
+            <circle cx="26" cy="26" r="22" fill="none" stroke="#E2E8F0" strokeWidth="3"/>
+            <motion.circle
               cx="26" cy="26" r="22"
               fill="none"
               stroke="#14B8A6"
               strokeWidth="3"
               strokeDasharray={`${2 * Math.PI * 22}`}
-              strokeDashoffset={`${2 * Math.PI * 22 * (1 - progress / questions.length)}`}
               strokeLinecap="round"
-              style={{ transition: 'stroke-dashoffset .4s ease', transformOrigin: '26px 26px', transform: 'rotate(-90deg)' }}
+              style={{ transformOrigin: '26px 26px', transform: 'rotate(-90deg)' }}
+              animate={{ strokeDashoffset: 2 * Math.PI * 22 * (1 - progress / questions.length) }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
             />
           </svg>
           <span className="quiz-progress-ring-text">{progress}/{questions.length}</span>
@@ -139,85 +176,129 @@ export default function Quiz({ questions, title = 'Knowledge Check' }) {
               const isCorrect = answers[i] === questions[i].correct;
               const isCurrent = i === current;
               return (
-                <button
+                <motion.button
                   key={i}
                   role="tab"
                   aria-selected={isCurrent}
                   aria-label={`Question ${i + 1}${isAnswered ? (isCorrect ? ' correct' : ' incorrect') : ''}`}
                   className={`quiz-step${isCurrent ? ' current' : ''}${isAnswered ? (isCorrect ? ' correct' : ' incorrect') : ''}`}
-                  onClick={() => setCurrent(i)}
+                  onClick={() => {
+                    setDirection(i > current ? 1 : -1);
+                    setCurrent(i);
+                  }}
+                  animate={isCurrent ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                  transition={isCurrent ? { duration: 1.2, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.2 }}
                 >
                   {isAnswered ? (isCorrect ? <CheckIcon /> : <XIcon />) : i + 1}
-                </button>
+                </motion.button>
               );
             })}
           </div>
 
           {/* Question card */}
-          <div className="quiz-card" key={`q-${current}`}>
-            <div className="quiz-question-num">Question {current + 1} of {questions.length}</div>
-            <div className="quiz-question">{q.question}</div>
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              className="quiz-card"
+              key={`q-${current}`}
+              custom={direction}
+              variants={cardVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              <div className="quiz-question-num">Question {current + 1} of {questions.length}</div>
+              <div className="quiz-question">{q.question}</div>
 
-            <div className="quiz-options" role="group" aria-label="Answer choices">
-              {q.options.map((opt, i) => {
-                let cls = 'quiz-option';
-                if (answered !== null) {
-                  if (i === q.correct) cls += ' correct';
-                  else if (i === answered) cls += ' incorrect';
-                  else cls += ' dimmed';
-                }
-                return (
-                  <button
-                    key={i}
-                    className={cls}
-                    onClick={() => handleSelect(i)}
-                    disabled={answered !== null}
-                    aria-pressed={answered === i}
-                  >
-                    <span className="quiz-option-letter">{LETTERS[i]}</span>
-                    <span className="quiz-option-text">{opt}</span>
-                    {answered !== null && i === q.correct && (
-                      <span className="quiz-option-icon correct-icon"><CheckIcon /></span>
-                    )}
-                    {answered !== null && i === answered && answered !== q.correct && (
-                      <span className="quiz-option-icon incorrect-icon"><XIcon /></span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            {answered !== null && (
-              <div className={`quiz-explanation${answered === q.correct ? ' correct' : ' incorrect'}`}>
-                <span className="quiz-explanation-label">
-                  {answered === q.correct ? '✓ Correct' : '✗ Not quite'}
-                </span>
-                {q.explanation}
+              <div className="quiz-options" role="group" aria-label="Answer choices">
+                {q.options.map((opt, i) => {
+                  let cls = 'quiz-option';
+                  if (answered !== null) {
+                    if (i === q.correct) cls += ' correct';
+                    else if (i === answered) cls += ' incorrect';
+                    else cls += ' dimmed';
+                  }
+                  return (
+                    <motion.button
+                      key={i}
+                      className={cls}
+                      onClick={() => handleSelect(i)}
+                      disabled={answered !== null}
+                      aria-pressed={answered === i}
+                      custom={i}
+                      variants={optionVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <span className="quiz-option-letter">{LETTERS[i]}</span>
+                      <span className="quiz-option-text">{opt}</span>
+                      {answered !== null && i === q.correct && (
+                        <motion.span
+                          className="quiz-option-icon correct-icon"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                        >
+                          <CheckIcon />
+                        </motion.span>
+                      )}
+                      {answered !== null && i === answered && answered !== q.correct && (
+                        <motion.span
+                          className="quiz-option-icon incorrect-icon"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                        >
+                          <XIcon />
+                        </motion.span>
+                      )}
+                    </motion.button>
+                  );
+                })}
               </div>
-            )}
-          </div>
+
+              <AnimatePresence>
+                {answered !== null && (
+                  <motion.div
+                    className={`quiz-explanation${answered === q.correct ? ' correct' : ' incorrect'}`}
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                  >
+                    <span className="quiz-explanation-label">
+                      {answered === q.correct ? '✓ Correct' : '✗ Not quite'}
+                    </span>
+                    {q.explanation}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Navigation */}
           <div className="quiz-nav">
-            <button
+            <motion.button
               className="quiz-nav-btn"
               onClick={handlePrev}
               disabled={current === 0}
               aria-label="Previous question"
+              whileHover={{ scale: 1.03 }}
             >
               ← Prev
-            </button>
+            </motion.button>
             <div className="quiz-nav-score">
               Score: <strong>{score}</strong>/{answers.filter(a => a !== null).length || '—'}
             </div>
-            <button
+            <motion.button
               className={`quiz-nav-btn quiz-nav-btn--next${answered !== null ? ' quiz-nav-btn--ready' : ''}`}
               onClick={handleNext}
               disabled={answered === null}
               aria-label={current === questions.length - 1 ? 'Finish quiz' : 'Next question'}
+              whileHover={{ scale: 1.03 }}
             >
               {current === questions.length - 1 ? 'Finish →' : 'Next →'}
-            </button>
+            </motion.button>
           </div>
         </>
       )}
