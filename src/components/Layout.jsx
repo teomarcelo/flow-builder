@@ -61,9 +61,9 @@ const sidebarItemVariants = {
 
 // Mobile drawer variants
 const drawerVariants = {
-  closed: { x: '-100%', opacity: 0.8 },
-  open: { x: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 30 } },
-  exit: { x: '-100%', opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } },
+  closed: { x: '100%' },
+  open: { x: 0, transition: { type: 'spring', stiffness: 300, damping: 30 } },
+  exit: { x: '100%', transition: { duration: 0.2, ease: 'easeIn' } },
 };
 
 const overlayVariants = {
@@ -99,8 +99,22 @@ export default function Layout({ children }) {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    const titles = {
+      '/': 'ADX301 Flow Builder Study Guide',
+      '/lesson/0': 'Lesson 0 · Course Overview · ADX301',
+      '/lesson/1': 'Lesson 1 · Think Like a Developer · ADX301',
+      '/lesson/2': 'Lesson 2 · Plan & Build Screen Flows · ADX301',
+      '/lesson/3': 'Lesson 3 · Plan & Build Record-Triggered Flows · ADX301',
+      '/quick-ref': 'Quick Reference · ADX301 Flow Builder',
+    };
+    document.title = titles[location.pathname] || 'ADX301 Flow Builder Study Guide';
+  }, [location.pathname]);
+
   return (
     <div className="app-shell">
+      <a href="#main-content" className="skip-link">Skip to content</a>
+
       {/* ── Top Nav ── */}
       <motion.nav
         className={`top-nav${scrolled ? ' top-nav--scrolled' : ''}`}
@@ -108,15 +122,15 @@ export default function Layout({ children }) {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
       >
-        <NavLink to="/" className="top-nav-logo" aria-label="ADX301 Home">
-          <div className="top-nav-logo-icon" aria-hidden="true" style={{ background: '#0f172a', borderRadius: '8px' }}><IconFlow /></div>
-          <span className="top-nav-logo-text" style={{ color: '#0f172a', letterSpacing: '-0.02em' }}>ADX301</span>
-          <span className="top-nav-logo-badge" style={{ background: '#0f172a', color: 'white', fontSize: '.6rem', padding: '3px 8px', borderRadius: '4px', fontWeight: 700, letterSpacing: '.04em', textTransform: 'uppercase', border: 'none' }}>Flow Builder</span>
+        <NavLink to="/" className="top-nav-logo" aria-label="ADX301 Flow Builder home">
+          <div className="top-nav-logo-icon" aria-hidden="true"><IconFlow /></div>
+          <span className="top-nav-logo-text">ADX301</span>
+          <span className="top-nav-logo-badge">Flow Builder</span>
         </NavLink>
 
         {/* Desktop nav links */}
-        <div className="top-nav-links" role="navigation" aria-label="Main navigation">
-          <NavLink to="/" className={({ isActive }) => 'top-nav-link' + (isActive ? ' active' : '')} style={({ isActive }) => isActive ? { color: '#0f172a', fontWeight: 600, backgroundColor: '#F8FAFC' } : { color: '#64748b' }}>
+        <div className="top-nav-links" role="navigation" aria-label="Main">
+          <NavLink to="/" className={({ isActive }) => 'top-nav-link' + (isActive ? ' active' : '')}>
             <IconHome />
             Overview
           </NavLink>
@@ -125,12 +139,11 @@ export default function Layout({ children }) {
               key={l.id}
               to={`/lesson/${l.number}`}
               className={({ isActive }) => 'top-nav-link' + (isActive ? ' active' : '')}
-              style={({ isActive }) => isActive ? { color: '#0f172a', fontWeight: 600, backgroundColor: '#F8FAFC' } : { color: '#64748b' }}
             >
               L{l.number}: {l.title.split(' ').slice(0, 2).join(' ')}
             </NavLink>
           ))}
-          <NavLink to="/quick-ref" className={({ isActive }) => 'top-nav-link' + (isActive ? ' active' : '')} style={({ isActive }) => isActive ? { color: '#0f172a', fontWeight: 600, backgroundColor: '#F8FAFC' } : { color: '#64748b' }}>
+          <NavLink to="/quick-ref" className={({ isActive }) => 'top-nav-link' + (isActive ? ' active' : '')}>
             Quick Ref
           </NavLink>
         </div>
@@ -141,6 +154,7 @@ export default function Layout({ children }) {
           onClick={() => setMobileOpen(v => !v)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-drawer"
         >
           {mobileOpen ? <IconX /> : <IconMenu />}
         </button>
@@ -166,8 +180,10 @@ export default function Layout({ children }) {
         {mobileOpen && (
           <motion.div
             className="mobile-drawer mobile-drawer--open"
-            role="navigation"
-            aria-label="Mobile navigation"
+            id="mobile-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
             variants={drawerVariants}
             initial="closed"
             animate="open"
@@ -175,7 +191,7 @@ export default function Layout({ children }) {
           >
             <div className="mobile-drawer-header">
               <div className="mobile-drawer-logo">
-                <div className="top-nav-logo-icon" aria-hidden="true" style={{ background: '#0f172a', borderRadius: '8px' }}><IconFlow /></div>
+                <div className="top-nav-logo-icon" aria-hidden="true"><IconFlow /></div>
                 <span>ADX301 Flow Builder</span>
               </div>
             </div>
@@ -229,7 +245,7 @@ export default function Layout({ children }) {
                   <NavLink
                     to={`/lesson/${l.number}`}
                     className={`sidebar-lesson-btn${isActive ? ' active' : ''}`}
-                    style={isActive ? { borderLeftColor: color, color: '#0f172a', background: `${color}08`, borderLeft: `3px solid ${color}` } : {}}
+                    style={isActive ? { borderLeftColor: color, background: `${color}12` } : {}}
                   >
                     <span className="sidebar-lesson-dot" style={{ background: color }} />
                     <span className="sidebar-lesson-label">

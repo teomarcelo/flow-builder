@@ -17,11 +17,11 @@ export default function Lesson3() {
   return (
     <>
       <div className="breadcrumb">
-        <Link to="/">Home</Link><span className="breadcrumb-sep">/</span><span>Lesson 3</span>
+        <Link to="/">Overview</Link><span className="breadcrumb-sep">/</span><span>Lesson 3</span>
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: '#FCD34D', border: `1px solid ${COLOR}40` }}>
+        <div className="lesson-badge" style={{ background: 'var(--amber-bg)', color: 'var(--l3)', border: '1px solid var(--amber-border)' }}>
           Lesson 3
         </div>
         <h1>Plan &amp; Build Record-Triggered Flows</h1>
@@ -52,6 +52,7 @@ export default function Lesson3() {
         </div>
 
         <SaveOrderDiagram />
+        <p style={{ fontSize: '.8rem', color: 'var(--fg-3)', marginTop: 10 }}>Teaching summary of the Apex Developer Guide <em>Triggers and Order of Execution</em>. The full list also includes duplicate rules, the workflow field-update cycle, and entitlement processing. After-save record-triggered flows run after workflow, escalation, and Process Builder, and before the transaction commits.</p>
 
         <DeepDive title="Why two phases? Why does the database split matter?">
           <p><strong>Before the record is saved</strong>, it only exists in memory. There is no record ID yet (for new records). Changes are cheap and fast — you're modifying in-memory data, not touching the database. This is why Before-Save flows are called "Fast Field Update" — they're genuinely faster because there's no extra DML. The entire Before phase runs synchronously, in the same thread as the save operation.</p>
@@ -60,8 +61,8 @@ export default function Lesson3() {
         </DeepDive>
 
         <ExamTrap title="Exam-critical: Before-Save runs BEFORE Apex Before Triggers">
-          <p>Counterintuitive fact: <strong>Before-Save flows run before Apex before triggers</strong>. The sequence: System Validation → <strong>Before-Save Flow</strong> → Validation Rules → Apex Before Trigger → Save to DB → After-Save Flow.</p>
-          <p style={{ marginTop: 6 }}>This means a Before-Save flow can set a field value that an Apex trigger later reads. It also means your Before-Save flow runs with less overhead than the older Apex trigger approach. The exam frequently asks which automation runs first.</p>
+          <p>Counterintuitive fact: <strong>Before-save record-triggered flows run before Apex before triggers</strong>. Salesforce's order of execution is: system validation → <strong>before-save flow</strong> → Apex before triggers → custom validation rules → save to the database (not yet committed) → after triggers → … → after-save flow → commit.</p>
+          <p style={{ marginTop: 6 }}>That means a before-save flow can set a field value that an Apex before trigger later reads. Salesforce documents Fast Field Updates as up to 10 times faster than a record-change process (Process Builder), because they update the triggering record without an extra DML statement.</p>
         </ExamTrap>
       </section>
 
@@ -99,13 +100,13 @@ export default function Lesson3() {
                 <div style={{ fontSize: '.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: '#0176D3' }}>After Save · Full capabilities</div>
               </div>
             </div>
-            <p style={{ fontSize: '.85rem', color: '#1E3A5F', marginBottom: 10 }}>Runs after the record is saved and the ID exists. Like a manager following up after the pizza was delivered — can send thank-you emails, update loyalty points, notify staff. But can't take the pizza back (no pre-save interception).</p>
+            <p style={{ fontSize: '.85rem', color: '#1E3A5F', marginBottom: 10 }}>Runs after the record is saved to the database and the ID exists. Like a manager following up after the pizza was delivered — send thank-you emails, update loyalty points, notify staff. A Custom Error element can still roll back the whole transaction if a later step fails.</p>
             <div style={{ fontSize: '.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#0176D3', marginBottom: 8 }}>Use when:</div>
             <ul style={{ fontSize: '.83rem', color: '#1E3A5F', paddingLeft: '1.2rem' }}>
               <li>Sending notifications or emails triggered by the save</li>
               <li>Creating or updating related records (need the new ID)</li>
               <li>Calling Apex or external integrations</li>
-              <li>Accessing <code>$Record__Prior</code> to detect field changes</li>
+              <li>Accessing <code>$Record__Prior</code> to detect field changes (also available in before-save on update)</li>
             </ul>
           </div>
         </div>
@@ -113,8 +114,8 @@ export default function Lesson3() {
         <ActionsMatrix />
 
         <MistakeCard>
-          <p><strong>Update Records in a Before-Save flow costs an extra DML</strong> — but you don't need it. In a Before-Save (Fast Field Update) flow, you can directly assign values to <code>$Record.FieldName</code> in an Assignment element. Salesforce writes those changes to the record automatically when the Before-Save flow completes.</p>
-          <p style={{ marginTop: 6 }}>Using an Update Records element in Before-Save triggers a separate DML statement for the same record — wastes a DML and slows the transaction. Assignment to <code>$Record</code> is the intended mechanism.</p>
+          <p><strong>Before-save flows don't use an Update Records element.</strong> In a Fast Field Update flow, assign values to <code>$Record.FieldName</code>. Salesforce writes those fields as part of the original save — no extra DML.</p>
+          <p style={{ marginTop: 6 }}>Create, Update, and Delete Records elements belong in after-save flows. Using an Update Records element on the triggering record after save costs an extra DML statement.</p>
         </MistakeCard>
 
         <ExamTrap title="Two places to decide: flow type AND trigger point">
@@ -123,7 +124,7 @@ export default function Lesson3() {
             <li><strong>Trigger object and when</strong>: Created, Updated, Deleted, or Created and Updated</li>
             <li><strong>Flow executes</strong>: Fast Field Update (Before Save) OR Actions and Related Records (After Save)</li>
           </ol>
-          <p style={{ marginTop: 6 }}>The exam presents scenarios where the wrong trigger point is selected. Key discriminator: <em>"Can the record's ID be null when this runs?"</em> → Before Save (yes, new records have no ID) vs After Save (always has ID). <em>"Does the flow need to block the save?"</em> → Must be Before Save with Custom Error. After-Save cannot prevent the save.</p>
+          <p style={{ marginTop: 6 }}>The exam presents scenarios where the wrong trigger point is selected. Key discriminator: <em>"Can the record's ID be null when this runs?"</em> → Before Save (yes, for new records) vs After Save (the ID exists). <em>"Does the flow need to block the save?"</em> → Use the Custom Error element. It rolls back the current transaction and blocks the triggering change in both before-save and after-save record-triggered flows.</p>
         </ExamTrap>
       </section>
 
@@ -139,18 +140,18 @@ export default function Lesson3() {
               </div>
               <div>
                 <div className="definition-label">$Record</div>
-                <div className="definition-text"><strong>Current</strong> field values of the triggering record. Available on both CREATE and UPDATE. References parent relationships up to 10 levels: <code>{'{!$Record.Account.Name}'}</code></div>
+                <div className="definition-text"><strong>Current</strong> field values of the triggering record. Available on create, update, and delete. You can walk parent relationships, for example <code>{'{!$Record.Account.Name}'}</code></div>
               </div>
             </div>
             <div style={{ fontSize: '.72rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--fg-3)', marginBottom: 8, marginTop: 16 }}>Available on:</div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <span className="tag tag-green">CREATE</span>
               <span className="tag tag-green">UPDATE</span>
-              <span className="tag tag-green">DELETE (as prior)</span>
+              <span className="tag tag-green">DELETE</span>
             </div>
             <div style={{ marginTop: 12, fontSize: '.83rem', color: 'var(--fg-2)' }}>
               In a <strong>Before-Save</strong> flow: read <code>$Record</code>, set fields on it directly via Assignment. The platform writes your changes automatically.<br /><br />
-              In an <strong>After-Save</strong> flow: <code>$Record</code> reflects the committed state, including the assigned ID.
+              In an <strong>After-Save</strong> flow: the record is already written to the database (not yet committed), so the ID is available.
             </div>
           </div>
           <div className="concept-card" style={{ marginBottom: 0 }}>
@@ -221,8 +222,9 @@ export default function Lesson3() {
           </div>
         </div>
 
-        <ExamTrap title="Entry criteria with $Record__Prior">
-          <p>Entry criteria on a Record-Triggered Flow can also reference <code>$Record__Prior</code> — but only when the Condition Requirement is set to "When records are created or updated to meet condition requirements." If your entry criteria compares current vs. prior values, the flow only runs when the field actually changes, not every time the record saves. This is the <strong>correct way</strong> to fire a flow only when Stage changes.</p>
+        <ExamTrap title="Entry criteria vs $Record__Prior on scheduled paths">
+          <p>On an update, the immediate path can compare <code>$Record</code> to <code>$Record__Prior</code>, or use the <strong>Is Changed</strong> operator in start conditions. To run only the first time criteria become true, set <strong>When to Run the Flow for Updated Records</strong> to <strong>Only when a record is updated to meet the condition requirements</strong>.</p>
+          <p style={{ marginTop: 6 }}><code>$Record__Prior</code> is <strong>not</strong> supported in scheduled-path elements or in scheduled-path entry-criteria formulas.</p>
         </ExamTrap>
       </section>
 
@@ -248,9 +250,9 @@ export default function Lesson3() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
           <div>
-            <div className="definition-label">The Custom Error Element — The Only Way to Block a Save</div>
+            <div className="definition-label">The Custom Error Element</div>
             <div className="definition-text">
-              <strong>Custom Error</strong> is a special flow element available exclusively in Before-Save flows. When executed, it <strong>terminates the entire transaction</strong> — nothing saves, all DML rolls back, and the user sees your error message inline on the field or in a page-level popup. Think of it as the bouncer at the database door: wrong credentials, you don't get in.
+              <strong>Custom Error</strong> is available in record-triggered flows (before-save and after-save). When it runs, it shows your message (inline on a field or in a window on the record page), rolls back the current transaction, and blocks the change that triggered the flow. Trailhead also shows it on a normal path, not only on a fault path — for example, to block a delete that validation rules cannot catch.
             </div>
           </div>
         </div>
@@ -300,7 +302,7 @@ export default function Lesson3() {
         />
 
         <DeepDive title="Flow-Based Validation vs. Standard Validation Rules — When to Use Each">
-          <p><strong>Use Standard Validation Rules when:</strong> the validation only involves fields on the same object. They're simpler, run before flows, and don't consume governor limits. Example: Opportunity Close Date must be after today.</p>
+          <p><strong>Use Standard Validation Rules when:</strong> the check only involves fields on the same record (and parent merge fields). They are simpler and do not consume Flow DML or SOQL limits. In the save order they run <em>after</em> before-save flows and Apex before triggers. Example: Opportunity Close Date must be after today.</p>
           <p style={{ marginTop: 8 }}><strong>Use Flow-Based Validation when:</strong></p>
           <ul>
             <li>The validation requires querying another object (Holiday, Custom Settings, Metadata)</li>
@@ -308,7 +310,7 @@ export default function Lesson3() {
             <li>You need to customize the error message with live data from the query result</li>
             <li>The validation should only fire under certain user-context conditions you need to evaluate dynamically</li>
           </ul>
-          <p style={{ marginTop: 8 }}>The two approaches are complementary — a record can have both standard validation rules AND a Before-Save flow with Custom Error. They're evaluated sequentially.</p>
+          <p style={{ marginTop: 8 }}>They can coexist. A before-save flow runs first, then Apex before triggers, then custom validation rules. Custom Error can still roll back later in a record-triggered flow.</p>
         </DeepDive>
       </section>
 
@@ -321,7 +323,7 @@ export default function Lesson3() {
           <div className="before-after">
             <div className="before-col">
               <div className="before-label">Formula Field — Made-to-Order</div>
-              <p style={{ fontSize: '.88rem' }}>Recalculates on every single page load. 50 formula fields on Account = 50 calculations every time anyone opens an Account record. As org data grows and formulas reference related objects, page load times exceed Salesforce limits. Users start seeing timeout errors.</p>
+              <p style={{ fontSize: '.88rem' }}>Formula fields are calculated each time data is read, not stored as a static value. Formulas that walk related objects add work on every read. A before-save flow can compute the value once on save and store it in a regular field.</p>
               <div style={{ background: '#FFF1F2', border: '1px solid #FECDD3', borderRadius: 8, padding: 12, marginTop: 8 }}>
                 <div style={{ fontSize: '.72rem', fontWeight: 700, color: 'var(--red)', marginBottom: 4 }}>The Math</div>
                 <div style={{ fontSize: '.82rem', color: '#9F1239' }}>50 formulas × 10,000 daily Account views = <strong>500,000 formula evaluations per day</strong>. Even at 5ms each, that's 41 minutes of compute time wasted on already-known values.</div>
@@ -373,7 +375,7 @@ export default function Lesson3() {
           <span className="tip-box-icon">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           </span>
-          <span><span className="tip-label">Best Practice: Separate Create and Update Flows</span>For formula field replacement, build <em>two separate flows</em>: one for Create (trigger: "A record is created") and one for Update (trigger: "A record is updated when RecordType is changed"). Separate entry criteria = cleaner governor limit usage = easier to test each scenario independently.</span>
+          <span><span className="tip-label">Tighten entry conditions</span>Salesforce supports multiple record-triggered flows on one object; Flow Trigger Explorer sets their run order. Use start conditions so a flow runs only when the fields it cares about actually change, instead of on every save.</span>
         </div>
       </section>
 
@@ -525,9 +527,9 @@ export default function Lesson3() {
               {[
                 { icon: '⏱', title: 'Offset timing', detail: 'Offset in minutes, hours, or days. Positive = after the date field. Negative = before.' },
                 { icon: '🔀', title: 'Separate transaction', detail: 'Runs in its own transaction — separate governor limits. A fault on the scheduled path does NOT roll back the original save.' },
-                { icon: '📋', title: 'Scheduled action queue', detail: 'Visible in Setup → Scheduled Actions. Can be deleted from queue before firing.' },
-                { icon: '🔁', title: 'Re-evaluation on update', detail: 'If the date field changes, Salesforce reschedules the alarm automatically.' },
-                { icon: '⚠️', title: 'Maximum 50 scheduled actions', detail: 'Per flow per record per 24-hour rolling period.' },
+                { icon: '📋', title: 'Time-Based Automations', detail: 'View and delete pending scheduled paths from Setup → Time-Based Automations (Quick Find: Time-Based Automations).' },
+                { icon: '🔁', title: 'Re-evaluation on update', detail: 'If the date field used as the time source changes, Salesforce reschedules the pending path.' },
+                { icon: '🚫', title: 'No $Record__Prior on the path', detail: 'Scheduled-path elements and scheduled-path entry formulas cannot use $Record__Prior.' },
               ].map(c => (
                 <div key={c.title} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <span style={{ fontSize: '1rem', flexShrink: 0, marginTop: 1 }}>{c.icon}</span>

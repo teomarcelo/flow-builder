@@ -10,13 +10,13 @@ export default function Lesson1() {
   return (
     <>
       <div className="breadcrumb">
-        <Link to="/">Home</Link>
+        <Link to="/">Overview</Link>
         <span className="breadcrumb-sep">/</span>
         <span>Lesson 1</span>
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: `1px solid ${COLOR}40` }}>
+        <div className="lesson-badge" style={{ background: 'var(--violet-bg)', color: 'var(--l1)', border: '1px solid var(--violet-border)' }}>
           Lesson 1
         </div>
         <h1>Think Like a Developer</h1>
@@ -213,7 +213,7 @@ export default function Lesson1() {
             <li>They must preserve leading zeros and exact format</li>
             <li>Salesforce IDs come in 15-character (case-sensitive) and 18-character (case-insensitive) variants</li>
           </ul>
-          <p style={{ margin: '8px 0 0' }}>In flows, always use <code>CASESAFEID()</code> formula when constructing URLs from IDs to convert to the safe 18-char format.</p>
+          <p style={{ margin: '8px 0 0' }}>The <code>CASESAFEID()</code> formula function converts a 15-character ID to the 18-character case-insensitive ID. Use it in a Flow formula resource when you need the 18-character form (for example, comparing IDs or building a URL).</p>
         </DeepDive>
       </section>
 
@@ -458,9 +458,9 @@ export default function Lesson1() {
           <p style={{ marginTop: 8 }}>The same limit applies in Apex, REST, and Flow. Understanding it deeply is what separates senior admins from beginners. When Record-Triggered Flows run, they process records in batches — sometimes 200 at a time. Each loop iteration counts as a separate DML if you put Create Records inside the loop.</p>
         </DeepDive>
 
-        <ExamTrap title="DML inside a loop = System.LimitException">
-          <p>The exam scenario: "You built a flow that loops over 200 Contacts and creates a Task for each one inside the loop. What happens?" <strong>Answer: the flow throws System.LimitException on record 151 and rolls back the entire transaction.</strong> Records 1–150 do NOT save because Salesforce rolls back on limit failure.</p>
-          <p style={{ marginTop: 6 }}>Correct pattern: <code>Assignment (Add to Collection)</code> inside loop → <code>Create Records</code> outside loop, passing the full collection. This is <strong>one DML statement</strong> for all records.</p>
+        <ExamTrap title="DML inside a loop hits the 150-statement limit">
+          <p>The exam scenario: "You built a flow that loops over 200 Contacts and creates a Task for each one inside the loop. What happens?" <strong>Answer: the flow fails when the transaction exceeds 150 DML statements, and Salesforce rolls back the transaction.</strong> None of those Tasks are kept.</p>
+          <p style={{ marginTop: 6 }}>Correct pattern: <code>Assignment (Add to Collection)</code> inside the loop → <code>Create Records</code> after the loop, using the collection. That is <strong>one DML statement</strong> for all records.</p>
         </ExamTrap>
       </section>
 
@@ -501,7 +501,7 @@ export default function Lesson1() {
         </table>
       </section>
 
-      <Quiz questions={quizData.l1} title="Lesson 1 Knowledge Check — Variables &amp; Data Types" />
+      <Quiz questions={quizData.l1} title="Lesson 1 Knowledge Check — Variables & Data Types" />
 
       <div className="page-nav">
         <Link to="/lesson/0" className="page-nav-btn">← Lesson 0: Course Overview</Link>

@@ -73,7 +73,7 @@ const fadeInFromLeft = {
 // ─────────────────────────────────────────────
 export function ExamTrap({ title, children }) {
   return (
-    <motion.div className="exam-trap" {...fadeInFromLeft}>
+    <motion.div className="exam-trap" role="note" aria-label="Exam trap" {...fadeInFromLeft}>
       <div className="exam-trap-header">
         <span className="exam-trap-icon"><IcTarget /></span>
         <span className="exam-trap-badge">EXAM TRAP</span>
@@ -171,10 +171,10 @@ const SOD_ZONES = [
     bg: 'rgba(124,58,237,.07)',
     border: 'rgba(124,58,237,.2)',
     steps: [
-      { n: 1, label: 'System Validation', sub: 'Required fields, field format, max length', note: 'Cannot be bypassed' },
-      { n: 2, label: 'Before-Save Flows', sub: 'Fast Field Update', flow: true, note: 'Runs BEFORE Apex!' },
-      { n: 3, label: 'Custom Validation Rules', sub: 'Admin-created validation rules', note: 'Runs AFTER Before-Save flows' },
-      { n: 4, label: 'Apex Before Triggers', sub: 'trigger(before insert/update)', apex: true },
+      { n: 1, label: 'System Validation', sub: 'Required fields, field format, max length', note: 'Layout rules on UI saves' },
+      { n: 2, label: 'Before-Save Flows', sub: 'Fast Field Update', flow: true, note: 'Runs BEFORE Apex before triggers' },
+      { n: 3, label: 'Apex Before Triggers', sub: 'trigger(before insert/update)', apex: true },
+      { n: 4, label: 'Custom Validation Rules', sub: 'Admin-created validation rules', note: 'Run AFTER before Apex triggers' },
     ]
   },
   {
@@ -188,10 +188,11 @@ const SOD_ZONES = [
       { n: 5, label: 'Apex After Triggers', sub: 'trigger(after insert/update)', apex: true },
       { n: 6, label: 'Assignment Rules', sub: 'Lead & Case auto-assignment' },
       { n: 7, label: 'Auto-Response Rules', sub: 'Case & Lead acknowledgement emails' },
-      { n: 8, label: 'Workflow Rules', sub: 'Legacy — retiring 2025', legacy: true },
-      { n: 9, label: 'After-Save Flows', sub: 'Actions & Related Records', flow: true },
-      { n: 10, label: 'Escalation Rules', sub: 'Case escalation logic' },
-      { n: 11, label: 'Roll-up Summary Fields', sub: 'Parent record aggregations recalculate' },
+      { n: 8, label: 'Workflow Rules', sub: 'Support ended Dec 31, 2025', legacy: true },
+      { n: 9, label: 'Escalation Rules', sub: 'Case escalation logic' },
+      { n: 10, label: 'Process Builder', sub: 'Support ended Dec 31, 2025', legacy: true },
+      { n: 11, label: 'Roll-up Summary Fields', sub: 'Parent aggregations recalculate' },
+      { n: 12, label: 'After-Save Flows', sub: 'Actions & Related Records', flow: true },
     ]
   },
   {
@@ -212,7 +213,7 @@ const SOD_ZONES = [
 const MILESTONES = [
   {
     label: 'RECORD WRITTEN TO DATABASE',
-    sub: 'Auto ID assigned · Timestamps set · Record ID now available in after-save flows',
+    sub: 'Record ID assigned · Not committed yet · After-save flows can use the ID',
     color: '#0176D3',
   },
   {
@@ -296,7 +297,7 @@ export function BulkifyDiagram() {
       >
         <div className="bulkify-col-head bulkify-bad">
           <span className="bulkify-col-badge"><IcX /> Anti-Pattern</span>
-          <span className="bulkify-col-sub">DML inside the loop — fails at record 151</span>
+          <span className="bulkify-col-sub">DML inside the loop — hits the 150-statement limit</span>
         </div>
         <div className="bulkify-flow">
           <div className="bulkify-el">
@@ -317,9 +318,9 @@ export function BulkifyDiagram() {
         <div className="bulkify-result bulkify-result--bad">
           <IcX />
           <div>
-            <strong>System.LimitException</strong>
-            <div>Too many DML statements: 151</div>
-            <div style={{ fontSize: '.78rem', marginTop: 4, opacity: .75 }}>Flow crashes on record 151 of 500</div>
+            <strong>Flow fails</strong>
+            <div>Transaction exceeds 150 DML statements</div>
+            <div style={{ fontSize: '.78rem', marginTop: 4, opacity: .75 }}>Salesforce rolls back the transaction</div>
           </div>
         </div>
       </motion.div>
@@ -381,7 +382,7 @@ const MATRIX_ROWS = [
   { group: 'Core Field Operations' },
   { label: 'Update fields on the triggering record', before: true, after: 'cost', afterNote: '+1 DML' },
   { label: 'Access triggering record\'s ID (new records)', before: false, after: true },
-  { label: 'Access $Record__Prior (old field values)', before: false, after: true },
+  { label: 'Access $Record__Prior (old field values)', before: true, after: true, beforeNote: 'Update only' },
   { group: 'Data Operations' },
   { label: 'Get Records (SOQL query)', before: true, after: true },
   { label: 'Create related records', before: false, after: true },
@@ -390,13 +391,13 @@ const MATRIX_ROWS = [
   { label: 'Trigger on record DELETE', before: false, after: true },
   { group: 'Logic Elements' },
   { label: 'Decision, Assignment, Loop', before: true, after: true },
-  { label: 'Collection Sort / Filter', before: true, after: true },
-  { label: 'Custom Error (block the save)', before: true, after: false, beforeNote: 'Only way to block' },
+  { label: 'Collection Sort / Filter', before: false, after: true },
+  { label: 'Custom Error (block the save)', before: true, after: true, beforeNote: 'Rolls back', afterNote: 'Also rolls back' },
   { group: 'Actions & Integrations' },
   { label: 'Send Email Alert', before: false, after: true },
   { label: 'Call Apex Action (@InvocableMethod)', before: false, after: true },
   { label: 'Invoke Subflow', before: false, after: true },
-  { label: 'HTTP Callout to external system', before: false, after: true },
+  { label: 'HTTP Callout to external system', before: false, after: true, afterNote: 'Use an async path' },
   { label: 'Post to Slack / Chatter', before: false, after: true },
   { group: 'Advanced Paths' },
   { label: 'Scheduled Paths (time-based actions)', before: false, after: true },

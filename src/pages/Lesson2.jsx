@@ -10,11 +10,11 @@ export default function Lesson2() {
   return (
     <>
       <div className="breadcrumb">
-        <Link to="/">Home</Link><span className="breadcrumb-sep">/</span><span>Lesson 2</span>
+        <Link to="/">Overview</Link><span className="breadcrumb-sep">/</span><span>Lesson 2</span>
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: '#5EEAD4', border: `1px solid ${COLOR}40` }}>
+        <div className="lesson-badge" style={{ background: 'var(--teal-bg)', color: 'var(--l2)', border: '1px solid var(--teal-border)' }}>
           Lesson 2
         </div>
         <h1>Plan &amp; Build Screen Flows</h1>
@@ -134,12 +134,11 @@ export default function Lesson2() {
             </thead>
             <tbody>
               {[
-                ['Which records show?', 'ALL records of that object type', 'Only records matching your filter criteria'],
-                ['How many records?', 'No limit (search-based)', 'Maximum 200 records'],
+                ['Which records show?', 'Users search the object (not a complete dump of every record)', 'Only records matching your filter criteria'],
+                ['How many records?', 'Search-based; not a preloaded list', 'The first 200 matching records'],
                 ['UI component', 'Typeahead search box', 'Picklist (dropdown) or radio buttons'],
-                ['Can create new parent?', '✅ Yes (inline New button)', '❌ No'],
-                ['Can filter by field value?', '❌ No (shows all)', '✅ Yes (e.g., Type = "Prospect")'],
-                ['Best for UC 2-1?', '❌ Would show non-prospects', '✅ Filters to Prospect Accounts only'],
+                ['Can filter by field value?', 'Not as a filtered picklist of matching records', 'Yes (for example, Type = Prospect)'],
+                ['Best for UC 2-1?', 'Would not limit the list to Prospects', 'Filters to Prospect Accounts'],
               ].map(([criteria, lookup, rcs]) => (
                 <tr key={criteria}>
                   <td style={{ fontWeight: 600, fontSize: '.84rem' }}>{criteria}</td>

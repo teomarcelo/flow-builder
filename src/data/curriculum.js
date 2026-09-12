@@ -190,14 +190,14 @@ export const quizData = {
       question: 'When would you use a Record Choice Set instead of a Lookup field?',
       options: ['When you need access to all parent records', 'When you need to filter which records appear (e.g., only Prospect Accounts)', 'When you need to create a new parent record on the fly'],
       correct: 1,
-      explanation: 'Record Choice Sets filter records by criteria (Type = Prospect). Limitation: 200 records max. Lookup fields show ALL related records and allow creating new ones.'
+      explanation: 'Record Choice Sets present a filtered set of records. Trailhead notes they retrieve only the first 200 records, so add a filter when the object has more. Lookup components are search-based rather than a complete filtered list.'
     },
     {
       id: 'q10',
       question: 'What does a Fault path do in a Screen Flow?',
       options: ['It skips the current element and moves to the next', 'It catches database errors and lets you show a custom error message instead of the generic system error', 'It pauses the flow for admin review'],
       correct: 1,
-      explanation: 'Without a fault path, users see: "An unhandled fault has occurred." With a fault path, you catch the error and show a helpful screen with the ExceptionCode details.'
+      explanation: 'Without a fault path, users see: "An unhandled fault has occurred in this flow." With a fault path, the flow continues on that path so you can show {!$Flow.FaultMessage} instead of the generic system error.'
     },
     {
       id: 'q11',
@@ -213,7 +213,7 @@ export const quizData = {
       question: 'A Record-Triggered Flow needs to send a welcome email when a new Account is created. Should this be Fast Field Update or Actions and Related Records?',
       options: ['Fast Field Update (Before Save)', 'Actions and Related Records (After Save)'],
       correct: 1,
-      explanation: 'Sending email is an Action — only available in After Save flows. Fast Field Update runs before the record is committed, so no ID exists yet and actions aren\'t available.'
+      explanation: 'Email is an action. Optimize the flow for Actions and Related Records (after save). Fast Field Updates run before the record is saved to the database, so a new record has no ID yet and those actions are not available.'
     },
     {
       id: 'q13',
@@ -242,18 +242,18 @@ export const quizData = {
         'Terminates the flow, rolls back the transaction, and shows an error on the page layout'
       ],
       correct: 2,
-      explanation: 'Custom Error is the Flow equivalent of a Validation Rule — it stops the save completely, rolls back all changes in the transaction, and displays your error message inline on the field or in a popup.'
+      explanation: 'Custom Error shows your message and rolls back the current transaction, blocking the change that triggered the record-triggered flow. It works in before-save and after-save flows, including on a normal path (not only a fault path).'
     },
     {
       id: 'q16',
       question: 'Why replace a formula field with a Record-Triggered Flow?',
       options: [
         'Formula fields are deprecated in Salesforce',
-        'Formula fields calculate on every page load; a flow pre-computes and stores the value, making pages load faster',
+        'Formula fields are calculated each time data is read; a flow can store the value in a regular field',
         'Flows can reference more objects than formula fields'
       ],
       correct: 1,
-      explanation: 'Formula fields are computed on-the-fly every time a record is accessed. With many formula fields, page loads slow down. A flow runs once on save and stores the result as a regular field value.'
+      explanation: 'Formula fields are not stored. Trailhead: the calculated value is calculated each time data is read. A record-triggered flow can compute the value on save and store it in a regular field.'
     },
     {
       id: 'q17',
@@ -264,7 +264,7 @@ export const quizData = {
         'One flow per field that needs automation'
       ],
       correct: 1,
-      explanation: 'One giant flow becomes unmaintainable "spaghetti." Multiple small flows with focused entry criteria are easier to test, debug, maintain, and perform better.'
+      explanation: 'Salesforce supports multiple record-triggered flows on the same object. Use focused entry conditions, and set run order in Flow Trigger Explorer. One unfocused flow that runs on every save is harder to test and debug.'
     }
   ]
 };

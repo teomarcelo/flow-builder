@@ -10,13 +10,13 @@ export default function Lesson0() {
   return (
     <>
       <div className="breadcrumb">
-        <Link to="/">Home</Link>
+        <Link to="/">Overview</Link>
         <span className="breadcrumb-sep">/</span>
         <span>Lesson 0</span>
       </div>
 
       <div className="lesson-header fade-up">
-        <div className="lesson-badge" style={{ background: COLOR_BG, color: COLOR, border: `1px solid ${COLOR}40` }}>
+        <div className="lesson-badge" style={{ background: 'var(--blue-bg)', color: 'var(--l0)', border: '1px solid var(--blue-border)' }}>
           Lesson 0
         </div>
         <h1>Course Overview</h1>
@@ -34,7 +34,7 @@ export default function Lesson0() {
           <div>
             <div className="definition-label">Definition</div>
             <div className="definition-text">
-              <strong>Flow</strong> is Salesforce's declarative automation engine — it automates business processes by executing logic, reading from and writing to Salesforce objects (database), and optionally interacting with users through screens. Flows are built visually in <strong>Flow Builder</strong>. A <strong>Flow Interview</strong> is a single running instance of a flow — one record save triggers one interview; 200 records trigger 200 interviews (running in bulk).
+              <strong>Flow</strong> is Salesforce's declarative automation engine — it automates business processes by executing logic, reading from and writing to Salesforce objects, and optionally interacting with users through screens. Flows are built visually in <strong>Flow Builder</strong>. A <strong>Flow Interview</strong> is a running instance of a flow. When many records change in one save, Salesforce creates an interview per record and bulkifies data elements across those interviews. Standard DML is processed in batches of up to 200 records.
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@ export default function Lesson0() {
 
         <DeepDive title="Why Flow Replaced Process Builder and Workflow Rules">
           <p>Before Flow Builder's current power, Salesforce had separate tools for different automation needs: Workflow Rules (field updates + emails), Process Builder (multi-step logic), and Flow (screen flows only). This fragmentation created problems: you'd need three separate tools to automate one business process, and they interacted in unpredictable ways.</p>
-          <p style={{ marginTop: 8 }}>Salesforce consolidated everything into Flow. Workflow Rules are retiring in 2026. Process Builder is in maintenance mode. Record-Triggered Flows replace both — with better performance, better debugging, and better governor limit management. <strong>Everything new should be built in Flow.</strong></p>
+          <p style={{ marginTop: 8 }}>Salesforce consolidated those tools into Flow. Support and updates for Workflow Rules and Process Builder ended on December 31, 2025. Existing rules and processes still run, but Salesforce no longer supports them or fixes bugs in them. Record-Triggered Flows replace both. <strong>Build new automation in Flow.</strong></p>
         </DeepDive>
       </section>
 
@@ -137,7 +137,7 @@ export default function Lesson0() {
               tag: 'Record-Triggered Flow',
               title: 'Fires automatically on record save',
               desc: 'Launches when a record is created, updated, or deleted. Runs invisibly in the background. The modern replacement for Workflow Rules and Process Builder. Runs at two points: Before Save (Fast Field Update) and After Save (Actions & Related Records).',
-              strengths: ['No user interaction required', 'Runs in bulk for up to 200 records per batch', 'Before-Save: zero extra DML for field updates'],
+              strengths: ['No user interaction required', 'Runs in the same save as the record change (batches of up to 200 records)', 'Before-Save: field updates on $Record with no extra DML'],
               limitations: ['Cannot show screens to users', 'Must be mindful of governor limits in bulk context'],
               tip: 'Auto-update fields, validate on save, create related records, send triggered emails'
             },
@@ -166,7 +166,7 @@ export default function Lesson0() {
               title: 'Runs at a specified time',
               desc: 'Launches at a defined time and frequency, automatically processes a batch of records that match your criteria. Great for bulk maintenance jobs, nightly cleanup, and weekly reminders. Separate from Scheduled Paths, which are time-based paths inside a Record-Triggered Flow.',
               strengths: ['Runs automatically without user action', 'Batch processes many records at once', 'Configurable frequency: once, daily, weekly'],
-              limitations: ['Runs in batch — record context is query-based, not triggered by a save', 'Runs in its own transaction (Apex Flex Queue)'],
+              limitations: ['Runs in batch — record context comes from the scheduled query, not from a user save', 'Each run is its own transaction'],
               tip: 'Nightly data cleanup, weekly reminder emails, batch field recalculations, housekeeping jobs'
             },
           ].map(card => (

@@ -24,7 +24,7 @@ const FLOW_ELEMENTS = [
   { name: 'Delete Records', when: 'Remove records (DELETE)' },
   { name: 'Subflow', when: 'Call another flow as a reusable module' },
   { name: 'Custom Error', when: 'Abort the transaction with an error message' },
-  { name: 'Send Email', when: 'Send an email action (After Save only)' },
+  { name: 'Send Email', when: 'Email alert / action (after-save record-triggered flows)' },
   { name: 'Scheduled Path', when: 'Fire logic at a time relative to a date field' },
 ];
 
@@ -32,7 +32,7 @@ const DML_OPS = [
   { op: 'Insert', el: 'Create Records', ok: true },
   { op: 'Update', el: 'Update Records', ok: true },
   { op: 'Delete', el: 'Delete Records', ok: true },
-  { op: 'Upsert', el: 'Create Records (option)', ok: true },
+  { op: 'Upsert', el: 'Create Records can create or update', ok: true },
   { op: 'Undelete', el: 'n/a — Apex only', ok: false },
   { op: 'Merge', el: 'n/a — Apex only', ok: false },
 ];
@@ -51,7 +51,7 @@ const BEST_PRACTICES = [
   ['camelCase variable names', 'Use descriptive full words: varNumOfPizzas not var1'],
   ['Add Fault paths', 'Every data element (Get/Create/Update/Delete) needs a Fault path'],
   ['Entry criteria on RTFs', 'Reduce unnecessary executions → conserve governor limits'],
-  ['One purpose per flow', 'Multiple small flows > one giant spaghetti flow'],
+  ['One purpose per flow', 'Focused entry conditions; Flow Trigger Explorer sets run order'],
   ['Bulk DML outside loops', 'Collect in Collection inside loop → one DML outside'],
   ['Whiteboard first', 'Plan variables, DML, algorithm, and edge cases BEFORE opening Flow Builder'],
   ['Hide Previous after DML', 'Prevents duplicate record creation on backward navigation'],
@@ -59,7 +59,7 @@ const BEST_PRACTICES = [
 ];
 
 const GLOBAL_VARS = [
-  { name: '$Record', desc: 'Current field values. Available on CREATE and UPDATE.' },
+  { name: '$Record', desc: 'Current field values of the triggering record (create, update, and delete).' },
   { name: '$Record__Prior', desc: 'Previous field values. Only available on UPDATE (record is brand new on CREATE).' },
   { name: '$Flow.CurrentDate', desc: 'Today\'s date inside the flow.' },
   { name: '$Flow.CurrentDateTime', desc: 'Current date and time inside the flow.' },
@@ -69,19 +69,20 @@ const GLOBAL_VARS = [
 ];
 
 const SAVE_ORDER = [
-  { step: '1', label: 'User Saves Record', color: '#0369A1' },
-  { step: '2', label: 'Validation Rules run', color: '#7C3AED' },
-  { step: '3', label: 'Before-Save Flows (Fast Field Update)', color: '#D97706' },
-  { step: '4', label: 'Record SAVED to database', color: '#0F766E' },
-  { step: '5', label: 'After-Save Flows (Actions & Related)', color: '#D97706' },
-  { step: '6', label: 'COMMITTED to database', color: '#059669' },
+  { step: '1', label: 'System validation', color: '#0369A1' },
+  { step: '2', label: 'Before-save flows (Fast Field Update)', color: '#D97706' },
+  { step: '3', label: 'Apex before triggers', color: '#7C3AED' },
+  { step: '4', label: 'Custom validation rules', color: '#7C3AED' },
+  { step: '5', label: 'Record saved (not committed)', color: '#0F766E' },
+  { step: '6', label: 'After-save flows (Actions & Related)', color: '#D97706' },
+  { step: '7', label: 'Commit', color: '#059669' },
 ];
 
 export default function QuickRef() {
   return (
     <>
       <div className="breadcrumb">
-        <Link to="/">Home</Link>
+        <Link to="/">Overview</Link>
         <span className="breadcrumb-sep">/</span>
         <span>Quick Reference</span>
       </div>
@@ -111,7 +112,7 @@ export default function QuickRef() {
           </div>
           <div className="note-box" style={{ marginTop: 16 }}>
             <span className="note-box-icon">ℹ️</span>
-            <span><strong>Before-Save flows</strong> can change fields and run Custom Error (abort). <strong>After-Save flows</strong> can send emails, create related records, and call Apex — but cannot change the triggering record directly.</span>
+            <span><strong>Before-save flows</strong> update the triggering record with no extra DML and can use Custom Error to roll back. <strong>After-save flows</strong> can send emails, create related records, and call Apex. They can still update the triggering record with an Update Records element (+1 DML), and Custom Error still rolls back the transaction. This strip is abbreviated: assignment, auto-response, workflow, escalation, and Process Builder run after the save and before after-save flows.</span>
           </div>
         </div>
       </section>
@@ -264,19 +265,17 @@ export default function QuickRef() {
           <div className="before-col" style={{ background: '#F0F9FF', borderColor: '#BAE6FD' }}>
             <div className="before-label" style={{ background: '#0369A1' }}>🔍 Lookup Field</div>
             <ul style={{ fontSize: '.88rem', color: '#1E3A5F' }}>
-              <li>Shows <strong>ALL</strong> parent records (no filter)</li>
-              <li>Search / typeahead input</li>
-              <li>Can create new parent record on the fly</li>
-              <li>No record limit</li>
+              <li>Search / typeahead for records of that object</li>
+              <li>Not a complete filtered picklist</li>
+              <li>Does not retrieve a preloaded list of 200 matches</li>
             </ul>
           </div>
           <div className="after-col" style={{ background: '#F0FDF4', borderColor: '#BBF7D0' }}>
             <div className="after-label" style={{ background: '#0F766E' }}>🎯 Record Choice Set</div>
             <ul style={{ fontSize: '.88rem', color: '#134E4A' }}>
-              <li>Filter records by any criteria</li>
+              <li>Filter records by criteria you set</li>
               <li>Renders as picklist or radio buttons</li>
-              <li>Max 200 records</li>
-              <li>Cannot create new parent inline</li>
+              <li>Retrieves only the first 200 matching records</li>
             </ul>
           </div>
         </div>
